@@ -3,300 +3,1428 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Petit Protocol — Bowel Perforation Training</title>
+  <title>Petit Protocol — Malawi bowel workshop (draft)</title>
+  <meta name="description" content="Offline training and wet-lab aid for Malawi.kom one-day bowel-surgery workshops. Not for live patient care. Draft awaiting Dr Jan Petit's sign-off." />
   <meta name="theme-color" content="#1b4332" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Petit Protocol" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+  <link rel="icon" href="icons/icon-192.png" sizes="192x192" type="image/png" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <style>
     :root {
       --green: #1b4332;
       --green-2: #2d6a4f;
-      --leaf: #40916c;
       --sand: #f4efe6;
       --card: #fffdf8;
       --ink: #1a1a1a;
-      --muted: #5c5c5c;
+      --muted: #3d3d3d;
       --line: #e4dccf;
-      --warn: #9a3412;
+      --warn: #7c2d12;
       --ok: #166534;
-      --accent: #b45309;
     }
     * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: var(--sand); color: var(--ink); font-family: "Segoe UI", system-ui, sans-serif; }
-    body { min-height: 100dvh; }
+    html, body { margin: 0; padding: 0; background: var(--sand); color: var(--ink); }
+    body {
+      min-height: 100dvh;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+    .skip {
+      position: absolute; left: 8px; top: -40px; background: #fff; color: var(--green);
+      padding: 8px 12px; z-index: 80; border-radius: 8px;
+    }
+    .skip:focus { top: 8px; }
+    .sticky-top { position: sticky; top: 0; z-index: 20; }
     header {
       background: var(--green);
       color: #fff;
-      padding: 14px 16px 12px;
-      position: sticky; top: 0; z-index: 20;
+      padding: calc(12px + env(safe-area-inset-top)) 14px 12px;
+      display: flex; gap: 10px; align-items: flex-start;
     }
-    header h1 { font-size: 16px; margin: 0; letter-spacing: .02em; }
-    header p { margin: 2px 0 0; font-size: 12px; opacity: .85; }
+    header img { width: 40px; height: 40px; border-radius: 10px; flex: 0 0 auto; }
+    header div { min-width: 0; }
+    header h1 { font-size: 18px; margin: 0; letter-spacing: 0.01em; line-height: 1.2; }
+    header p { margin: 2px 0 0; font-size: 13px; color: #e7f0ea; }
+    header .logbtn {
+      margin-top: 8px; background: var(--sand); color: var(--green); border: 0;
+      border-radius: 999px; padding: 8px 12px; font-weight: 700; font-size: 14px; cursor: pointer;
+    }
+    .safety {
+      background: var(--warn); color: #fff; padding: 8px 14px;
+      font-size: 13px; font-weight: 700; line-height: 1.35;
+    }
+    .swstatus {
+      margin: 0; padding: 6px 14px; background: #e7f0ea; color: var(--green);
+      font-size: 13px; font-weight: 600;
+    }
     nav {
-      display: flex; gap: 6px; overflow-x: auto; padding: 10px 12px;
-      background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 58px; z-index: 19;
+      display: flex; gap: 6px; overflow-x: auto; padding: 8px 10px;
+      background: #fff; border-bottom: 1px solid var(--line);
     }
     nav button {
       border: 1px solid var(--line); background: #fff; color: var(--green);
-      border-radius: 999px; padding: 7px 12px; font-size: 13px; white-space: nowrap; cursor: pointer;
+      border-radius: 999px; padding: 8px 12px; font-size: 14px; font-weight: 700;
+      white-space: nowrap; cursor: pointer; min-height: 40px;
     }
     nav button.active { background: var(--green); color: #fff; border-color: var(--green); }
-    main { max-width: 720px; margin: 0 auto; padding: 16px 14px 90px; }
+    main {
+      max-width: 720px; margin: 0 auto;
+      padding: 14px 14px calc(24px + env(safe-area-inset-bottom));
+      overflow-wrap: anywhere;
+    }
     .card {
       background: var(--card); border: 1px solid var(--line); border-radius: 16px;
-      padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 0 rgba(0,0,0,.03);
+      padding: 16px; margin-bottom: 12px;
     }
-    h2 { font-size: 20px; margin: 0 0 8px; }
-    h3 { font-size: 16px; margin: 16px 0 8px; color: var(--green); }
-    p, li { line-height: 1.45; font-size: 15px; }
-    .muted { color: var(--muted); font-size: 13px; }
-    .pill { display: inline-block; background: #e9f5ee; color: var(--green-2); border-radius: 999px; padding: 2px 8px; font-size: 11px; font-weight: 600; }
-    .warnbox { background: #fff7ed; border: 1px solid #fdba74; color: #7c2d12; border-radius: 12px; padding: 12px; font-size: 14px; }
-    .okbox { background: #ecfdf3; border: 1px solid #86efac; color: #14532d; border-radius: 12px; padding: 12px; font-size: 14px; }
-    button.primary, .choice {
+    h2 { font-size: 1.35rem; margin: 0 0 8px; line-height: 1.25; }
+    h3 { font-size: 1.05rem; margin: 14px 0 6px; color: var(--green); }
+    p, li { font-size: 1rem; }
+    .muted { color: var(--muted); font-size: 0.92rem; }
+    .pill, .await {
+      display: inline-block; border-radius: 999px; padding: 2px 8px;
+      font-size: 12px; font-weight: 700; line-height: 1.4; vertical-align: baseline;
+    }
+    .pill { background: #e7f0ea; color: var(--green); }
+    .await { background: var(--warn); color: #fff; }
+    .warnbox { background: #fff7ed; border: 1px solid #fdba74; color: #431407; border-radius: 12px; padding: 12px; }
+    .okbox { background: #ecfdf3; border: 1px solid #86efac; color: #14532d; border-radius: 12px; padding: 12px; }
+    .src { font-size: 0.86rem; color: var(--muted); margin-top: 8px; }
+    button.primary, button.choice, button.passbtn, button.redobtn, button.ghost {
       width: 100%; text-align: left; padding: 12px 14px; margin: 6px 0;
-      border-radius: 12px; border: 1px solid var(--line); background: #fff; cursor: pointer; font-size: 15px;
+      border-radius: 12px; border: 1px solid var(--line); background: #fff; color: var(--ink);
+      cursor: pointer; font-size: 16px; line-height: 1.35; white-space: normal;
     }
-    button.primary { background: var(--green); color: #fff; border: 0; text-align: center; font-weight: 600; }
-    button.ghost { background: transparent; border: 1px solid var(--line); }
+    button.primary { background: var(--green); color: #fff; border: 0; text-align: center; font-weight: 700; }
+    button.passbtn { background: var(--ok); color: #fff; border: 0; text-align: center; font-weight: 700; }
+    button.redobtn { background: var(--warn); color: #fff; border: 0; text-align: center; font-weight: 700; }
+    button.ghost { text-align: center; background: #fff; }
+    button:disabled { opacity: 0.55; cursor: default; }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 3px solid #b45309; outline-offset: 2px;
+    }
     .step { display: flex; gap: 10px; margin: 10px 0; }
-    .num { flex: 0 0 28px; height: 28px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 700; }
+    .num {
+      flex: 0 0 28px; height: 28px; border-radius: 50%; background: var(--green); color: #fff;
+      display: grid; place-items: center; font-size: 14px; font-weight: 700;
+    }
+    .layers { display: grid; gap: 6px; margin: 8px 0; }
+    .layers div { background: #e7f0ea; border-left: 4px solid var(--green); padding: 8px 10px; border-radius: 8px; }
     .hidden { display: none; }
+    .check {
+      display: flex; gap: 10px; align-items: flex-start; padding: 8px 0;
+      border-bottom: 1px solid var(--line); font-size: 15px;
+    }
+    .check input { width: 22px; height: 22px; margin-top: 2px; flex: 0 0 auto; }
+    .rowbtns { display: flex; flex-wrap: wrap; gap: 8px; }
+    .rowbtns button { width: auto; flex: 1 1 140px; text-align: center; }
+    label.field { display: block; font-weight: 700; font-size: 14px; margin: 10px 0 4px; }
+    input[type=text], input[type=date], select, textarea {
+      width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #c9bfb0;
+      font-size: 16px; font-family: inherit; background: #fff; color: var(--ink);
+    }
+    textarea { min-height: 88px; resize: vertical; }
     #chatlog { max-height: 320px; overflow-y: auto; }
-    .msg { margin: 8px 0; padding: 10px 12px; border-radius: 12px; font-size: 14px; }
-    .msg.bot { background: #eef6f1; }
+    .msg { margin: 8px 0; padding: 10px 12px; border-radius: 12px; font-size: 15px; }
+    .msg.bot { background: #e7f0ea; }
     .msg.user { background: #fff; border: 1px solid var(--line); }
-    input[type=text] { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--line); font-size: 15px; }
-    .score { font-size: 28px; font-weight: 700; color: var(--green); }
-    footer.note { font-size: 12px; color: var(--muted); margin-top: 8px; }
-    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    @media (max-width: 520px) { .grid2 { grid-template-columns: 1fr; } }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chips button { width: auto; border-radius: 999px; padding: 8px 10px; font-size: 13px; margin: 0; }
+    .score { font-size: 28px; font-weight: 700; color: var(--green); margin: 8px 0; }
+    .totals { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .total { background: #e7f0ea; border-radius: 12px; padding: 10px; }
+    .total b { display: block; font-size: 22px; color: var(--green); }
+    .total.all { grid-column: 1 / -1; }
+    .person, .corr {
+      display: flex; justify-content: space-between; gap: 8px; align-items: flex-start;
+      border-bottom: 1px solid var(--line); padding: 8px 0;
+    }
+    .person button, .corr button { width: auto; margin: 0; padding: 8px 10px; }
+    pre.export {
+      white-space: pre-wrap; word-break: break-word; background: #fff;
+      border: 1px solid var(--line); border-radius: 12px; padding: 10px; font-size: 13px;
+      max-height: 220px; overflow: auto;
+    }
+    pre.export:empty { display: none; }
+    .drawer[hidden] { display: none !important; }
+    .drawer { position: fixed; inset: 0; z-index: 50; background: rgba(26, 26, 26, 0.45); }
+    .panel {
+      position: absolute; top: 0; right: 0; bottom: 0; width: min(440px, 100%);
+      background: var(--sand); overflow: auto; padding: 16px 16px calc(20px + env(safe-area-inset-bottom));
+    }
+    .flow { list-style: none; padding: 0; margin: 0; }
+    .flow li { display: flex; gap: 10px; margin: 0 0 12px; }
+    a { color: var(--green); }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Petit Protocol</h1>
-    <p>Bowel perforation training for Malawian clinical officers · draft for Dr Jan Petit</p>
-  </header>
-  <nav>
-    <button class="active" data-tab="home">Home</button>
-    <button data-tab="decide">Decide</button>
-    <button data-tab="repair">Repair</button>
-    <button data-tab="wetlab">Wet lab</button>
-    <button data-tab="cases">Cases</button>
-    <button data-tab="ask">Ask Petit</button>
-    <button data-tab="trainer">Trainer</button>
-  </nav>
-  <main>
-    <section id="home" class="tab">
-      <div class="card">
-        <span class="pill">PROTOTYPE · NOT FOR PATIENT CARE</span>
-        <h2>Keep the teaching after the teacher flies home</h2>
-        <p>Dr Petit trains clinical officers to find and repair bowel perforations using pig or cow intestine. This app is meant to hold his method: when to operate, how to sew, how to practise, and when to stop and refer.</p>
-        <p class="muted">It does not replace his hands in theatre. It repeats his workshop between visits and after he retires.</p>
+  <a class="skip" href="#content">Skip to content</a>
+  <div class="sticky-top">
+    <header>
+      <img src="icons/icon-192.png" alt="" width="40" height="40" />
+      <div>
+        <h1>Petit Protocol</h1>
+        <p>Malawi.kom bowel workshop · draft for Dr Jan Petit</p>
+        <button class="logbtn" id="openLogBtn" type="button">Log a correction</button>
       </div>
+    </header>
+    <div class="safety">TRAINING AND WET-LAB AID ONLY — NOT FOR LIVE PATIENT CARE OR UNSUPERVISED SURGERY. Draft awaiting Dr Jan Petit's clinical sign-off.</div>
+    <p class="swstatus" id="swstatus">Preparing the offline copy…</p>
+    <nav aria-label="Sections">
+      <button type="button" class="active" data-tab="workshop" aria-selected="true">Workshop</button>
+      <button type="button" data-tab="decide" aria-selected="false">Decide</button>
+      <button type="button" data-tab="trays" aria-selected="false">Trays</button>
+      <button type="button" data-tab="cases" aria-selected="false">Cases</button>
+      <button type="button" data-tab="ask" aria-selected="false">Ask</button>
+      <button type="button" data-tab="trainer" aria-selected="false">Trainer</button>
+    </nav>
+  </div>
+
+  <main id="content">
+    <section id="workshop" class="tab">
       <div class="card">
-        <h3>What a clinical officer can do here</h3>
-        <ol>
-          <li>Walk a decision: repair, resect, stoma, or refer.</li>
-          <li>Rehearse the repair steps in order.</li>
-          <li>Set up a pig/cow intestine station the Petit way.</li>
-          <li>Sit a short case test before a supervised list.</li>
-          <li>Ask a question in simple English and get a conservative answer.</li>
+        <span class="pill">DRAFT · 9 DECEMBER 2026 DEMO</span>
+        <h2>One-day bowel workshop</h2>
+        <p>This page follows the Malawi.kom one-day bowel-surgery workshop for clinical officers, as described in the foundation’s annual reports for 2023, 2024, and 2025. Medical officers and nurses train on the same day.</p>
+        <p>The 2025 report (Jan Petit, March 2026) describes a day in two parts: an introduction, then supervised practice on <b>fresh cow intestine</b> — oversewing perforations, resection with anastomosis, and making a stoma — and a certificate at the end. The May–July 2025 round recorded 98 professionals.</p>
+        <p class="muted">Hospitals named in that report include St Joseph’s Nguludi, Montfort Nchalo, Trinity Muona, St Peter’s Likoma, and St John’s Mzuzu, with later visits to Phalombe, Embangweni, Mzuzu, Likoma, and Livingstonia.</p>
+      </div>
+
+      <div class="card">
+        <h2>Workshop day flow</h2>
+        <ol class="flow">
+          <li>
+            <div class="num">1</div>
+            <div>
+              <b>John Wanda’s introduction.</b> The 2025 annual report says John Wanda, Clinical Officer and Malawi.kom team member, opens the day: when to operate, how the operation is done, complications, and a film of bowel operations.
+              <p><span class="await">Awaiting Dr. Petit's sign-off</span> This draft also lists him as co-teacher linked with St Joseph’s Hospital, Nguludi. That link is waiting for his confirmation. He is named here because the published report names him.</p>
+            </div>
+          </li>
+          <li>
+            <div class="num">2</div>
+            <div>
+              <b>Three hands-on trays</b> on fresh cow intestine, with a surgeon in the room.
+              <p><button type="button" class="choice" data-goto-tray="1">Tray 1 — Close two typhoid ileal perforations in two layers, transversely</button></p>
+              <p><button type="button" class="choice" data-goto-tray="2">Tray 2 — Diverting stoma</button></p>
+              <p><button type="button" class="choice" data-goto-tray="3">Tray 3 — Resect and join end to end in two layers</button></p>
+            </div>
+          </li>
+          <li>
+            <div class="num">3</div>
+            <div><b>Water-test check at each tray</b> before the participant moves on. Fill, clamp, squeeze gently. A leak or a narrow lumen is a redo.</div>
+          </li>
+          <li>
+            <div class="num">4</div>
+            <div><b>Certificate and take-home guide.</b> The 2025 report says participants receive a certificate of a successful workshop. The take-home guide is the card at the bottom of this tab. It stays on the phone with no signal.</div>
+          </li>
         </ol>
       </div>
-      <div class="card warnbox">
-        Training aid only. Do not use this app to operate on a patient. Follow your hospital protocol and a supervising surgeon when one is available.
+
+      <div class="card">
+        <h3>Tissue</h3>
+        <p>Use <b>fresh cow intestine</b> first. The 2023, 2024, and 2025 reports all describe the practical course on fresh cow intestine. The 2024 report notes that cows are available and that the intestine is close enough to human bowel to practise on.</p>
+        <p><span class="await">Awaiting Dr. Petit's sign-off</span> Pig or goat intestine is only a fallback if cow intestine cannot be found that morning. The annual reports do not describe that fallback.</p>
+        <div class="warnbox">Animal tissue is dirty skills practice. It is not sterile theatre. Wash hands. Keep flies off the bowel. Dispose of tissue as meat waste unless the hospital says otherwise.</div>
+      </div>
+
+      <div class="card">
+        <h3>Take-home guide</h3>
+        <ol>
+          <li>Resuscitate first. Nil by mouth. Nasogastric tube. Adult antibiotic doses are the Malawi STG peritonitis regimen on the Decide tab. Refer if theatre, anaesthesia, blood, suture, or expertise is missing.</li>
+          <li>Practise three stitches: two-layer transverse closure, a diverting stoma, and a two-layer end-to-end join.</li>
+          <li>Water-test every tray. If it leaks or narrows: take the stitches out and redo.</li>
+          <li>Leave a contaminated skin wound open. Watch the ward afterwards. Ask for help early on the Southern Region surgical WhatsApp network — no personal numbers live in this app.</li>
+        </ol>
+        <p class="src">Sources you can open later: Malawi.kom jaarverslag 2023, 2024, and 2025 (malawikom.org); WHO Surgical Care at the District Hospital, small intestine, anastomosis, peritonitis, and wound chapters; Malawi Standard Treatment Guidelines, 6th edition, 2023, Ministry of Health.</p>
       </div>
     </section>
 
     <section id="decide" class="tab hidden">
       <div class="card">
+        <h2>Before and after theatre</h2>
+        <p class="muted">Context for the decision, not a prescription chart. Adult notes only. Confirm every live case with the hospital protocol and a supervisor.</p>
+        <h3>Before theatre</h3>
+        <ul>
+          <li><b>IV resuscitation.</b> Malawi STG 2023 §7.11 starts peritonitis care with intravenous fluids. §1.4 uses 0.9% sodium chloride or Ringer’s lactate for hypovolaemic shock, and repeats a bolus if required. The sepsis example in §1.4.2 is 30 ml/kg unless the patient is in heart failure. WHO Surgical Care at the District Hospital also starts with normal saline or Ringer’s lactate.</li>
+          <li><b>Nil by mouth</b> (STG: NPO) and a <b>nasogastric tube</b> (STG §7.11 and the WHO manual).</li>
+          <li><b>Analgesia</b> (STG §7.11).</li>
+          <li><b>Adult antibiotics, Malawi STG 2023 §7.11:</b> IV ceftriaxone 2 g every 24 hours for 5–7 days <b>and</b> IV metronidazole 500 mg every 8 hours for 5–7 days. That section says IV antibiotics are indicated for appendicitis, cholecystitis, and bowel obstruction with perforation, and that surgery is indicated for peritonitis.</li>
+          <li><b>WHO example, different drugs:</b> ampicillin 2 g IV every 6 hours, plus gentamicin 5 mg/kg IV every 24 hours, plus metronidazole 500 mg IV every 8 hours.</li>
+          <li><span class="await">Awaiting Dr. Petit's sign-off</span> Which of those regimens he wants drilled in the workshop, and any single fluid volume for every typhoid perforation.</li>
+          <li><b>Children:</b> do not use the adult doses. STG §9.7 (typhoid in children) gives ciprofloxacin 10 mg/kg by mouth 12-hourly for 14 days, or ceftriaxone 50 mg/kg IV once daily if the child cannot swallow, and says refer if perforation or gut bleeding is suspected.</li>
+        </ul>
+        <h3>In theatre — the decision is still the tree below</h3>
+        <ul>
+          <li>Look along the whole bowel. Count every hole. Note paper-thin bowel next to a hole.</li>
+          <li>A small-bowel perforation, when you repair it: <b>transverse two-layer invaginating closure</b> (WHO). Inner layer through the full thickness of the wall. Outer layer serosa to serosa. WHO also allows a purse-string invaginating suture. <span class="await">Awaiting Dr. Petit's sign-off</span> on suture material and on running versus interrupted stitches for that repair.</li>
+          <li>Several wounds close together, or ischaemic gut: resect and join end to end in two layers (WHO). The manual’s inner layer is continuous 2/0 absorbable on a half-circle atraumatic needle. The second layer is serosa and muscle, continuous or interrupted.</li>
+          <li>The join should admit the tip of the thumb and finger (WHO).</li>
+        </ul>
+        <h3>After theatre</h3>
+        <ul>
+          <li><b>Skin.</b> WHO: do not close a contaminated or infected skin wound for primary healing. A potentially contaminated wound is left open and closed as a delayed primary closure after about 2–5 days. Clean-contaminated wounds in that manual are closed after about 48 hours. Close the fascia. Leave dirty skin open.</li>
+          <li><b>Leak watch.</b> <span class="await">Awaiting Dr. Petit's sign-off</span> This draft asks teams to look on days 3–5 for new pain, fever, a silent tender abdomen, or dirty fluid from the wound. That window is not a figure printed in the STG or in the WHO peritonitis chapter. Anastomotic leak is named there as one cause of peritonitis.</li>
+          <li><b>Refer early</b> when theatre, anaesthesia, blood, or suture is missing, or expertise is not available (STG §7.11). Also refer if a patient who has been operated on needs intensive care or another operation.</li>
+          <li><b>Southern Region surgical WhatsApp consultation network.</b> Use it to ask a surgeon for advice. <span class="await">Awaiting Dr. Petit's sign-off</span> on the group’s exact name and how a new clinician joins. This app stores no personal phone numbers.</li>
+        </ul>
+        <p class="src">Malawi Standard Treatment Guidelines, 6th edition, 2023, §1.4 and §7.11 and §9.7. WHO, Surgical Care at the District Hospital, chapters on wounds, small intestine, anastomosis, and peritonitis.</p>
+      </div>
+
+      <div class="card">
         <h2>Decision coach</h2>
-        <p class="muted">Draft logic for Dr Petit to rewrite. Start with the patient in front of you.</p>
+        <p class="muted">Four endings only: repair, resect and join, stoma, or refer. Thresholds Dr Petit has not confirmed are marked.</p>
         <div id="qbox"></div>
         <div id="result" class="hidden"></div>
       </div>
     </section>
 
-    <section id="repair" class="tab hidden">
+    <section id="trays" class="tab hidden">
       <div class="card">
-        <h2>Primary repair of ileal perforation</h2>
-        <p class="muted">Standard LMIC teaching placeholder — replace with Dr Petit’s exact stitch and suture.</p>
-        <div class="step"><div class="num">1</div><div>Resuscitate first. IV fluids, antibiotics that cover gut flora, nasogastric tube, catheter. Do not rush a shocked patient into theatre.</div></div>
-        <div class="step"><div class="num">2</div><div>Midline laparotomy. Pack and suck. Look from duodenojejunal flexure to rectum. Count every hole. Look for paper-thin “pre-perforations”.</div></div>
-        <div class="step"><div class="num">3</div><div>If one small antimesenteric ileal hole, bowel otherwise healthy, patient stable: freshen edges only if dead. Close transversely so you do not narrow the lumen.</div></div>
-        <div class="step"><div class="num">4</div><div>Typical draft: interrupted seromuscular sutures (2-0 or 3-0 absorbable), one layer, bites in healthy bowel a few millimetres from the hole. Check lumen with a fingertip or a soft tube.</div></div>
-        <div class="step"><div class="num">5</div><div>Wash the whole abdomen with warm saline until the effluent is clear. Place a drain only if your local protocol says so. Close fascia securely.</div></div>
-        <div class="step"><div class="num">6</div><div>If many holes, dead bowel, hole next to the ileocaecal valve, or the patient is dying on the table: do not force a pretty anastomosis. Resect, or bring out a stoma, or pack and refer if you cannot finish safely.</div></div>
-        <div class="okbox">The skill to practise on intestine is the stitch that does not leak and does not strangle the lumen. That is what the wet lab is for.</div>
+        <h2>Three cow-intestine trays</h2>
+        <p>Fresh cow intestine first. Pig or goat only if cow is unavailable that morning. <span class="await">Awaiting Dr. Petit's sign-off</span> on the fallback.</p>
+        <p>Do the water test at the end of every tray. The pass rule is a workshop draft, not a signed theatre order.</p>
       </div>
-    </section>
 
-    <section id="wetlab" class="tab hidden">
-      <div class="card">
-        <h2>Pig or cow intestine station</h2>
-        <p>This is the part Dr Petit already does in person. The app only standardises the station so a clinical officer can practise the week after he leaves.</p>
-        <h3>What you need</h3>
-        <ul>
-          <li>Fresh small bowel from an abattoir or butcher (pig or cow). Rinse well.</li>
-          <li>Board, gloves, basic set: needle holder, forceps, scissors, 2-0/3-0 suture.</li>
-          <li>Bowl of water or dilute iodine. Bucket for waste.</li>
-          <li>Phone to photograph the finished repair for the trainer.</li>
-        </ul>
-        <h3>Exercises (20–30 minutes each)</h3>
-        <ol>
-          <li><b>Single hole.</b> Cut a 5–8 mm hole on the antimesenteric border. Close transversely. Fill with water. Watch for leak.</li>
-          <li><b>Two holes close together.</b> Decide: two repairs or a short resection?</li>
-          <li><b>End-to-end join.</b> Cut the bowel. Join without twisting the mesentery. Test with water.</li>
-          <li><b>Narrowing check.</b> If you cannot pass a fingertip, you sewed it too tight. Redo.</li>
-        </ol>
-        <div class="warnbox">Animal tissue is not sterile theatre. Treat it as dirty skills practice. Wash hands. Dispose of tissue as meat waste, not in the clinical incinerator unless the hospital says so.</div>
+      <div class="card" id="tray-1">
+        <span class="pill">TRAY 1</span>
+        <h2>Two typhoid ileal perforations</h2>
+        <p>Close two holes, each in <b>two layers</b>, each <b>transversely</b>.</p>
+        <div class="layers" aria-label="Two layers">
+          <div><b>Inner layer.</b> Full thickness of the wall. Invaginate the edge.</div>
+          <div><b>Outer layer.</b> Serosa to serosa — a seromuscular, Lembert-type stitch. <span class="await">Awaiting Dr. Petit's sign-off</span> on the name Lembert, the suture, and running versus interrupted.</div>
+        </div>
+        <div class="step"><div class="num">1</div><div>Rinse the cow intestine. Keep it covered between turns so flies stay off it.</div></div>
+        <div class="step"><div class="num">2</div><div>On the antimesenteric border, make two small holes to stand in for two typhoid ileal perforations.</div></div>
+        <div class="step"><div class="num">3</div><div>Close each hole across the bowel, not along it, so you do not turn the hole into a stricture.</div></div>
+        <div class="step"><div class="num">4</div><div>Inner full-thickness layer, then outer seromuscular layer. WHO Surgical Care at the District Hospital describes this transverse two-layer invaginating closure (a purse-string invaginating suture is the other option in that manual).</div></div>
+        <div class="step"><div class="num">5</div><div>Water-test. Whether two holes in a living patient are two repairs or one resection is the Decide tab. <span class="await">Awaiting Dr. Petit's sign-off</span> on that threshold. This tray still practises the two-layer stitch on two holes.</div></div>
+        <div class="watertest" data-tray="1" data-stoma="no"></div>
+      </div>
+
+      <div class="card" id="tray-2">
+        <span class="pill">TRAY 2</span>
+        <h2>Diverting stoma</h2>
+        <p>The 2025 report includes making a stoma on fresh cow intestine. <span class="await">Awaiting Dr. Petit's sign-off</span> on the exact stoma (loop ileostomy or another), the spout, and how the bowel is fixed on the tray.</p>
+        <div class="step"><div class="num">1</div><div>Bring up a loop without twisting the mesentery and without tension.</div></div>
+        <div class="step"><div class="num">2</div><div>Open it and mature it the way the supervising surgeon shows. Do not invent a new stoma on the day.</div></div>
+        <div class="step"><div class="num">3</div><div>Fix it to the tray with the method he uses in the workshop. Write his method in the correction log.</div></div>
+        <div class="step"><div class="num">4</div><div>WHO background only, not his signed typhoid recipe: the district manual describes loop, double-barrel, and end colostomy, and an end ileostomy, mainly for colon injury.</div></div>
+        <div class="watertest" data-tray="2" data-stoma="yes"></div>
+      </div>
+
+      <div class="card" id="tray-3">
+        <span class="pill">TRAY 3</span>
+        <h2>Resection and end-to-end join</h2>
+        <p>Cut out a short bad segment and join the ends in <b>two layers</b>.</p>
+        <div class="step"><div class="num">1</div><div>Leave a margin of healthy bowel. The cut ends should bleed. WHO: healing of the join depends on a good blood supply.</div></div>
+        <div class="step"><div class="num">2</div><div>Line the mesentery up. No twist.</div></div>
+        <div class="step"><div class="num">3</div><div>WHO two-layer anastomosis: inner continuous 2/0 absorbable suture on a half-circle atraumatic needle, full thickness, invaginating the front wall. Second layer takes serosa and muscle. That second layer may be continuous, or interrupted absorbable or non-absorbable.</div></div>
+        <div class="step"><div class="num">4</div><div><span class="await">Awaiting Dr. Petit's sign-off</span> Use the suture the district hospital actually has. Confirm size and running versus interrupted with him, and log it.</div></div>
+        <div class="step"><div class="num">5</div><div>Close the mesenteric window with interrupted absorbable suture. Do not catch the vessels (WHO).</div></div>
+        <div class="watertest" data-tray="3" data-stoma="no"></div>
       </div>
     </section>
 
     <section id="cases" class="tab hidden">
       <div class="card">
         <h2>Case test</h2>
+        <p class="muted">A rehearsal before a supervised list. The feedback cites the draft, the STG, or the WHO manual. It is not Dr Petit speaking.</p>
         <p id="caseq"></p>
         <div id="caseopts"></div>
         <p id="casefb" class="muted"></p>
-        <p class="score" id="casescore"></p>
-        <button class="primary" id="nextcase">Next case</button>
+        <p class="score" id="casescore" aria-live="polite"></p>
+        <button class="primary" id="nextcase" type="button">Next case</button>
       </div>
     </section>
 
     <section id="ask" class="tab hidden">
       <div class="card">
-        <h2>Ask Petit</h2>
-        <p class="muted">Rule-based coach for the demo. After the visit this becomes Dr Petit’s own answers, not a generic chatbot.</p>
-        <div id="chatlog"></div>
-        <input id="q" type="text" placeholder="e.g. one hole near the valve — repair or resect?" />
-        <button class="primary" id="askbtn" style="margin-top:8px">Ask</button>
-        <p class="footer note">If the answer is unsure, the app must say: refer or call a surgeon. Never guess in the abdomen.</p>
+        <h2>Ask the Protocol (Draft)</h2>
+        <p>These replies are draft protocol notes. They cite the Malawi Standard Treatment Guidelines (2023) or the WHO district surgery manual, or they are marked <span class="await">Awaiting Dr. Petit's sign-off</span>. They are not spoken in Dr. Petit's voice. Nothing here is a personal quote.</p>
+        <p class="muted">If the note is unsure, resuscitate, do the operation you have practised with a supervisor, or refer. Then log the question.</p>
+        <div id="chatlog" aria-live="polite"></div>
+        <div class="chips" id="chips"></div>
+        <label class="field" for="q">Your question</label>
+        <input id="q" type="text" placeholder="e.g. adult with peritonitis — which IV antibiotics?" />
+        <button class="primary" id="askbtn" type="button">Ask the draft</button>
+        <button class="ghost" id="logQuestionBtn" type="button">Log this question for Dr Petit</button>
       </div>
     </section>
 
     <section id="trainer" class="tab hidden">
       <div class="card">
-        <h2>For Dr Petit on this visit</h2>
-        <p>Please mark what is wrong. We will change the app before anyone else sees it.</p>
-        <ul>
-          <li>Which stitch do you actually teach? One layer or two? Interrupted or running?</li>
-          <li>Which suture material do district hospitals really have?</li>
-          <li>When must a clinical officer stop and refer?</li>
-          <li>How do you set up the pig/cow table — photos we can lock in?</li>
-          <li>What mistakes do you correct every year?</li>
-          <li>May we use your name and “Petit Protocol”?</li>
-        </ul>
-        <h3>Proposed working arrangement</h3>
-        <p>You remain clinical author. Local partner builds, hosts, trains, and maintains. Malawi.kom / CHAM / COST can licence it. You can retire the flights; the method stays in the district hospital.</p>
-        <div class="okbox">Nothing goes live for patient-facing advice without your sign-off.</div>
+        <h2>Trainer tools</h2>
+        <p>For the meeting with Dr Petit on 9 December 2026. Everything on this tab stays on this phone. Nothing is uploaded.</p>
+        <p>Tap <b>Log a correction</b> on any screen while he talks. Record the screen and the line he changed. Export the log before you leave the room.</p>
+        <button class="primary" id="openLogBtn2" type="button">Log a correction</button>
+      </div>
+
+      <div class="card">
+        <h3>Sign-off list for this meeting</h3>
+        <p class="muted">Tick a line only after he has answered it. The tick is a reminder. The correction log holds his words.</p>
+        <div id="signoff"></div>
+      </div>
+
+      <div class="card">
+        <h3>Workshop participant register</h3>
+        <p class="muted">Malawi.kom categories: Clinical Officer, Nurse, Medical Officer, Other. Midwives can be entered as Nurse.</p>
+        <form id="regform">
+          <label class="field" for="regName">Name</label>
+          <input id="regName" name="name" type="text" autocomplete="name" required />
+          <label class="field" for="regCadre">Category</label>
+          <select id="regCadre" name="cadre">
+            <option>Clinical Officer</option>
+            <option>Nurse</option>
+            <option>Medical Officer</option>
+            <option>Other</option>
+          </select>
+          <div id="otherWrap" class="hidden">
+            <label class="field" for="regOther">Other role</label>
+            <input id="regOther" name="other" type="text" />
+          </div>
+          <label class="field" for="regFacility">Facility</label>
+          <input id="regFacility" name="facility" type="text" placeholder="Hospital (optional)" />
+          <label class="field" for="regDate">Workshop date</label>
+          <input id="regDate" name="date" type="date" />
+          <button class="primary" type="submit">Add participant</button>
+        </form>
+        <h3>Totals</h3>
+        <div class="totals" id="totals"></div>
+        <div id="reglist"></div>
+        <div class="rowbtns">
+          <button type="button" class="ghost" id="regText">Export text</button>
+          <button type="button" class="ghost" id="regCsv">Export CSV</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>4-question workshop evaluation</h3>
+        <p>Before the day, after the day, and — for the last theme — at 12 months. Themes follow the 2011 Simavi/CHAM workshop evaluation: useful, learned something new, feel confident, plan to use / using later.</p>
+        <p><span class="await">Awaiting Dr. Petit's sign-off</span> Exact wording of the 2011 form is not reproduced here. Tallies stay on this phone.</p>
+        <div id="evalbox"></div>
+        <button type="button" class="ghost" id="evalText">Export evaluation text</button>
+      </div>
+
+      <div class="card">
+        <h3>Wet-lab logistics</h3>
+        <p class="muted">Tick what is ready. Cow intestine from the abattoir, with a backup butcher. Heat, flies, gloves, sutures, instruments, a water syringe, and three trays.</p>
+        <div id="logistics"></div>
+        <button type="button" class="ghost" id="logisticsText">Export checklist text</button>
+      </div>
+
+      <div class="card">
+        <h3>Corrections saved on this phone</h3>
+        <div id="corrList"></div>
+        <div class="rowbtns">
+          <button type="button" class="ghost" id="corrText">Plain text</button>
+          <button type="button" class="ghost" id="corrCsv">CSV</button>
+          <button type="button" class="ghost" id="corrWa">Copy for WhatsApp</button>
+        </div>
+        <pre class="export" id="corrPreview"></pre>
       </div>
     </section>
   </main>
+
+  <div class="drawer" id="drawer" hidden>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+      <h2 id="drawerTitle">Log a correction</h2>
+      <p class="muted">For Reza at the 9 December 2026 meeting. Saved on this phone only.</p>
+      <label class="field" for="logLogger">Logged by</label>
+      <input id="logLogger" type="text" value="Reza" />
+      <label class="field" for="logScreen">Screen</label>
+      <input id="logScreen" type="text" />
+      <label class="field" for="logSection">Section</label>
+      <select id="logSection">
+        <option>Day flow</option>
+        <option>Tray 1</option>
+        <option>Tray 2</option>
+        <option>Tray 3</option>
+        <option>Water test</option>
+        <option>Decision coach</option>
+        <option>Before and after theatre</option>
+        <option>Case test</option>
+        <option>Ask the Protocol</option>
+        <option>Trainer</option>
+        <option>Other</option>
+      </select>
+      <label class="field" for="logShown">What was on the screen</label>
+      <textarea id="logShown" placeholder="The line or step Jan looked at"></textarea>
+      <label class="field" for="logCorrection">What he corrected</label>
+      <textarea id="logCorrection" placeholder="His correction, in his words as you heard them"></textarea>
+      <label class="field" for="logNote">Note</label>
+      <textarea id="logNote" placeholder="Optional"></textarea>
+      <button class="primary" id="saveCorr" type="button">Save on this phone</button>
+      <p id="saveMsg" class="muted" aria-live="polite"></p>
+      <div class="rowbtns">
+        <button type="button" class="ghost" id="drawerText">Plain text</button>
+        <button type="button" class="ghost" id="drawerCsv">CSV</button>
+        <button type="button" class="ghost" id="drawerWa">Copy for WhatsApp</button>
+      </div>
+      <pre class="export" id="drawerPreview"></pre>
+      <button class="ghost" id="closeLog" type="button">Close</button>
+    </div>
+  </div>
+
   <script>
-    const tabs = document.querySelectorAll("nav button");
-    tabs.forEach(btn => btn.onclick = () => {
-      tabs.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      document.querySelectorAll(".tab").forEach(t => t.classList.add("hidden"));
-      document.getElementById(btn.dataset.tab).classList.remove("hidden");
+    "use strict";
+    const KEY = {
+      corr: "petit-protocol-v1:corrections",
+      reg: "petit-protocol-v1:register",
+      eval: "petit-protocol-v1:eval",
+      logs: "petit-protocol-v1:logistics",
+      sign: "petit-protocol-v1:signoff",
+      water: "petit-protocol-v1:water",
+      logger: "petit-protocol-v1:logger"
+    };
+    const TAB_LABEL = {
+      workshop: "Workshop",
+      decide: "Decide",
+      trays: "Trays",
+      cases: "Cases",
+      ask: "Ask",
+      trainer: "Trainer"
+    };
+    const TAB_SECTION = {
+      workshop: "Day flow",
+      decide: "Decision coach",
+      trays: "Tray 1",
+      cases: "Case test",
+      ask: "Ask the Protocol",
+      trainer: "Trainer"
+    };
+    let currentTab = "workshop";
+    let lastQuestion = "";
+
+    function load(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (err) {
+        return fallback;
+      }
+    }
+    function save(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+    function uid() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    }
+    function stamp(iso) {
+      try {
+        return new Date(iso).toLocaleString("en-GB", { timeZone: "Africa/Blantyre", hour12: false });
+      } catch (err) {
+        return iso;
+      }
+    }
+    function download(filename, text, mime) {
+      const blob = new Blob([text], { type: mime });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+    }
+    function csvCell(value) {
+      let s = String(value == null ? "" : value);
+      if (/^[=+\-@]/.test(s)) s = "'" + s;
+      if (/[",\n\r]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+      return s;
+    }
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (err) {
+        const area = document.createElement("textarea");
+        area.value = text;
+        document.body.appendChild(area);
+        area.select();
+        let ok = false;
+        try { ok = document.execCommand("copy"); } catch (e2) { ok = false; }
+        area.remove();
+        return ok;
+      }
+    }
+
+    function showTab(id) {
+      currentTab = id;
+      document.querySelectorAll("nav button").forEach((btn) => {
+        const on = btn.dataset.tab === id;
+        btn.classList.toggle("active", on);
+        btn.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      document.querySelectorAll("main .tab").forEach((panel) => {
+        panel.classList.toggle("hidden", panel.id !== id);
+      });
+      window.scrollTo(0, 0);
+    }
+    document.querySelectorAll("nav button").forEach((btn) => {
+      btn.addEventListener("click", () => showTab(btn.dataset.tab));
+    });
+    function openTray(n) {
+      showTab("trays");
+      const el = document.getElementById("tray-" + n);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    document.querySelectorAll("[data-goto-tray]").forEach((btn) => {
+      btn.addEventListener("click", () => openTray(btn.dataset.gotoTray));
     });
 
     const tree = [
-      { id: 0, q: "Is the patient in shock or not responding to fluids?", a: [["Yes — still shocked", 1], ["No — reasonably stable", 2]] },
-      { id: 1, q: "Can you start surgery now with anaesthesia and blood available?", a: [["Yes", 3], ["No — no theatre / no anaesthetic / no blood", "REF"]] },
-      { id: 2, q: "How many perforations do you find, and is the bowel around them healthy?", a: [["One small hole, healthy bowel", "REPAIR"], ["Several holes or a stretch of dead/thin bowel", 4], ["Hole within ~5 cm of the ileocaecal valve", 4]] },
-      { id: 3, q: "At operation, is the bowel usable for a safe join?", a: [["Yes, limited disease", 2], ["No — dirty, dead, or patient crashing", "STOMA"]] },
-      { id: 4, q: "Are you trained and equipped to resect and join, or to make a stoma?", a: [["Yes — I can resect or make a stoma", "RESECT"], ["No — I should not invent a new operation tonight", "REF"]] }
+      {
+        id: "start",
+        q: "Is the patient still in shock, or not responding to fluids?",
+        note: "Resuscitate first. Malawi STG 2023 §1.4 and §7.11, and the WHO district manual, start with intravenous fluid.",
+        a: [["Yes — still shocked", "theatre"], ["No — reasonably stable", "findings"]]
+      },
+      {
+        id: "theatre",
+        q: "Can you start now, with anaesthesia, light, suture, and blood if you may need it?",
+        note: "If any of those are missing, this draft says refer. STG §7.11: refer if the expertise is not available.",
+        a: [["Yes", "usable"], ["No — theatre, anaesthesia, blood, or suture is missing", "REF"]]
+      },
+      {
+        id: "usable",
+        q: "At operation, is there a limited length of bowel you can repair or join safely, and is the patient stable enough to stay on the table?",
+        note: "If the patient is crashing, or the bowel is dead and you cannot finish a join, stop the leak with a stoma or refer.",
+        a: [["Yes — limited disease and stable enough", "findings"], ["No — dead bowel, or crashing", "STOMA"]]
+      },
+      {
+        id: "findings",
+        q: "What did you find?",
+        note: "Awaiting Dr. Petit's sign-off on two draft thresholds: one hole versus several, and a hole within about 5 cm of the ileocaecal valve. Those figures are not in the WHO manual and are not a signed Petit rule. WHO repairs a perforation with a transverse two-layer closure, and resects when several wounds are close together or the gut is ischaemic.",
+        badge: true,
+        a: [
+          ["One small hole, the bowel around it looks healthy, and it is not sitting on the ileocaecal valve", "REPAIR"],
+          ["Several holes, a thin or dead stretch, or a hole this draft flags within about 5 cm of the ileocaecal valve", "skill"]
+        ]
+      },
+      {
+        id: "skill",
+        q: "Are you trained and equipped today to resect and join, or to make a stoma, with the supervision you need?",
+        note: "If the honest answer is no, refer. Do not invent the operation tonight.",
+        a: [["Yes — I can resect and join, or make a stoma", "RESECT"], ["No", "REF"]]
+      }
     ];
     const labels = {
-      REPAIR: ["Primary repair", " freshen only dead edge, close transversely, test the lumen, wash the abdomen. Practise this on intestine until the water test is dry."],
-      RESECT: ["Resect or stoma", "Take the bad segment. Join only if the patient is stable and the ends look alive. If not, stoma. Do not leave dying bowel."],
-      STOMA: ["Damage control / stoma", "Stop the leak, wash, stoma or pack. Get the patient off the table alive. Refer early."],
-      REF: ["Do not start — resuscitate and refer", "A late, shocked perforation in a hospital with no anaesthetic is not a workshop case. Stabilise and move."]
+      REPAIR: {
+        title: "Repair",
+        text: "Transverse two-layer closure: inner full-thickness layer, outer serosa-to-serosa layer (WHO Surgical Care at the District Hospital). Then check the lumen. On the cow-intestine tray, water-test it. Suture choice and running versus interrupted stitches: Awaiting Dr. Petit's sign-off. The single-hole rule that brought you here is also still a draft threshold."
+      },
+      RESECT: {
+        title: "Resect and join — or a stoma if the join is unsafe",
+        text: "Take the damaged segment. Join end to end in two layers only if the patient is stable and both ends look alive (WHO). The join should admit the tip of the thumb and finger. If not, make a stoma rather than force the join. Exact stoma technique: Awaiting Dr. Petit's sign-off. The single-versus-multiple and 5 cm lines that may have sent you here are draft thresholds."
+      },
+      STOMA: {
+        title: "Stoma, or stop and refer",
+        text: "Stop the leak, wash out, and bring out a stoma if you can do that safely. If you cannot, do not start a new anastomosis. Refer. Exact stoma technique and tray fixation: Awaiting Dr. Petit's sign-off."
+      },
+      REF: {
+        title: "Resuscitate and refer",
+        text: "Do not start an operation you cannot finish. Intravenous fluids, nil by mouth, nasogastric tube, and the STG adult antibiotics if perforation with peritonitis is the working diagnosis and you are still holding the patient. STG §7.11: refer if expertise is not available. Ask on the Southern Region surgical WhatsApp consultation network. This app has no phone numbers. Awaiting Dr. Petit's sign-off on how that group is named and joined."
+      }
     };
-    let node = 0;
+    let node = "start";
     const qbox = document.getElementById("qbox");
     const result = document.getElementById("result");
     function renderQ() {
-      const n = tree.find(t => t.id === node);
-      qbox.innerHTML = "<h3>" + n.q + "</h3>";
-      n.a.forEach(([text, next]) => {
-        const b = document.createElement("button");
-        b.className = "choice";
-        b.textContent = text;
-        b.onclick = () => {
-          if (typeof next === "string") showRes(next);
-          else { node = next; renderQ(); }
-        };
+      const n = tree.find((item) => item.id === node);
+      qbox.textContent = "";
+      const h = document.createElement("h3");
+      h.textContent = n.q;
+      qbox.appendChild(h);
+      const note = document.createElement("p");
+      note.className = "muted";
+      note.textContent = n.note;
+      qbox.appendChild(note);
+      if (n.badge) {
+        const b = document.createElement("p");
+        const s = document.createElement("span");
+        s.className = "await";
+        s.textContent = "Awaiting Dr. Petit's sign-off";
+        b.appendChild(s);
         qbox.appendChild(b);
+      }
+      n.a.forEach(([text, next]) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "choice";
+        btn.textContent = text;
+        btn.addEventListener("click", () => {
+          if (labels[next]) showRes(next);
+          else { node = next; renderQ(); }
+        });
+        qbox.appendChild(btn);
       });
     }
     function showRes(code) {
-      qbox.innerHTML = "";
+      qbox.textContent = "";
       result.classList.remove("hidden");
-      result.innerHTML = "<div class='okbox'><b>" + labels[code][0] + "</b><p>" + labels[code][1] + "</p></div><button class='primary' id='resetd'>Start again</button>";
-      document.getElementById("resetd").onclick = () => { node = 0; result.classList.add("hidden"); renderQ(); };
+      result.textContent = "";
+      const box = document.createElement("div");
+      box.className = "okbox";
+      const title = document.createElement("b");
+      title.textContent = labels[code].title;
+      const p = document.createElement("p");
+      p.textContent = labels[code].text;
+      box.appendChild(title);
+      box.appendChild(p);
+      const badge = document.createElement("span");
+      badge.className = "await";
+      badge.textContent = "Awaiting Dr. Petit's sign-off";
+      box.appendChild(document.createElement("br"));
+      box.appendChild(badge);
+      result.appendChild(box);
+      const again = document.createElement("button");
+      again.type = "button";
+      again.className = "primary";
+      again.textContent = "Start again";
+      again.addEventListener("click", () => {
+        node = "start";
+        result.classList.add("hidden");
+        result.textContent = "";
+        renderQ();
+      });
+      result.appendChild(again);
     }
     renderQ();
 
+    const WATER_ITEMS = [
+      ["fill", "Filled with water"],
+      ["clamp", "Clamped"],
+      ["squeeze", "Squeezed gently"],
+      ["noleak", "Zero leak at the corners and along the suture line"],
+      ["lumen", "Lumen admits the tip of a thumb and a finger"],
+      ["mucosa", "No mucosa showing on the outside"],
+      ["twist", "No twist in the mesentery"]
+    ];
+    function waterState() { return load(KEY.water, {}); }
+    function mountWater(host) {
+      const tray = host.dataset.tray;
+      const stoma = host.dataset.stoma === "yes";
+      const all = waterState();
+      const saved = all[tray] || { checks: {}, passes: 0, redos: 0 };
+      host.textContent = "";
+      const h = document.createElement("h3");
+      h.textContent = "Water-test — pass or redo";
+      host.appendChild(h);
+      const rule = document.createElement("div");
+      rule.className = "warnbox";
+      rule.textContent = "Pass only when every required line is true. If it leaks or narrows: take the stitches out and redo. The thumb-and-finger lumen check is the WHO anastomosis check. The full pass rule is still a draft.";
+      host.appendChild(rule);
+      const badge = document.createElement("p");
+      const badgeSpan = document.createElement("span");
+      badgeSpan.className = "await";
+      badgeSpan.textContent = "Awaiting Dr. Petit's sign-off";
+      badge.appendChild(badgeSpan);
+      host.appendChild(badge);
+      const items = WATER_ITEMS.slice();
+      items.push(["stoma", stoma
+        ? "Stoma spouts and sits without tension"
+        : "Stoma spout — not required on this tray"]);
+      items.forEach(([key, label]) => {
+        const lab = document.createElement("label");
+        lab.className = "check";
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.dataset.key = key;
+        if (key === "stoma" && !stoma) input.dataset.optional = "1";
+        input.checked = !!saved.checks[key];
+        input.addEventListener("change", () => {
+          const state = waterState();
+          const row = state[tray] || { checks: {}, passes: 0, redos: 0 };
+          row.checks[key] = input.checked;
+          state[tray] = row;
+          save(KEY.water, state);
+        });
+        const span = document.createElement("span");
+        span.textContent = label;
+        lab.appendChild(input);
+        lab.appendChild(span);
+        host.appendChild(lab);
+      });
+      const status = document.createElement("p");
+      status.className = "muted";
+      status.setAttribute("aria-live", "polite");
+      function counts() {
+        const row = waterState()[tray] || { passes: 0, redos: 0 };
+        status.textContent = "Passes on this phone: " + (row.passes || 0) + " · Redos: " + (row.redos || 0);
+      }
+      const rowbtns = document.createElement("div");
+      rowbtns.className = "rowbtns";
+      const pass = document.createElement("button");
+      pass.type = "button";
+      pass.className = "passbtn";
+      pass.textContent = "Mark pass";
+      const redo = document.createElement("button");
+      redo.type = "button";
+      redo.className = "redobtn";
+      redo.textContent = "Mark redo";
+      pass.addEventListener("click", () => {
+        const required = host.querySelectorAll('input[type="checkbox"]');
+        let ok = true;
+        required.forEach((input) => {
+          if (input.dataset.optional === "1") return;
+          if (!input.checked) ok = false;
+        });
+        if (!ok) {
+          status.textContent = "Not a pass yet. Finish the list, or mark redo if it leaks or the lumen is narrow.";
+          return;
+        }
+        const state = waterState();
+        const row = state[tray] || { checks: {}, passes: 0, redos: 0 };
+        row.passes = (row.passes || 0) + 1;
+        state[tray] = row;
+        save(KEY.water, state);
+        counts();
+        status.textContent += " — Pass on this tray.";
+      });
+      redo.addEventListener("click", () => {
+        const state = waterState();
+        const row = state[tray] || { checks: {}, passes: 0, redos: 0 };
+        row.redos = (row.redos || 0) + 1;
+        row.checks = {};
+        state[tray] = row;
+        save(KEY.water, state);
+        host.querySelectorAll('input[type="checkbox"]').forEach((input) => { input.checked = false; });
+        status.textContent = "Redo. Take the stitches out and sew it again, then run this list from the top. Redos: " + row.redos + ".";
+      });
+      rowbtns.appendChild(pass);
+      rowbtns.appendChild(redo);
+      host.appendChild(rowbtns);
+      host.appendChild(status);
+      counts();
+    }
+    document.querySelectorAll(".watertest").forEach(mountWater);
+
     const cases = [
-      { q: "Stable young man. One 6 mm hole on the antimesenteric ileum, 40 cm from the valve. Rest of bowel looks well. What first?",
-        opts: ["Primary transverse repair", "Right hemicolectomy for every typhoid hole", "Close longitudinally to save time", "Send home on tablets"],
-        ok: 0, why: "Single healthy-edge ileal hole in a stable patient is the classic primary-repair case." },
-      { q: "You sew a repair. Water leaks at one corner. What now?",
-        opts: ["Ignore it if the leak is small", "Add a careful extra stitch and test again", "Pour iodine on it and close the abdomen", "Always convert to a total colectomy"],
-        ok: 1, why: "A leak on the table will leak in the ward. Fix it or change plan." },
-      { q: "Four holes over 20 cm of thin ileum, patient on a drip but tiring. You have never done an anastomosis unsupervised.",
-        opts: ["Repair all four quickly", "Resect if you are competent, otherwise stoma or call for help", "Only wash and hope", "Use silk through-and-through including mucosa in one bite everywhere"],
-        ok: 1, why: "Multiple diseased segments need resection or a stoma — not four hopeful stitches." }
+      {
+        q: "Stable adult. One small hole on the antimesenteric ileum, well away from the ileocaecal valve. The bowel around it looks healthy. Which closure matches the WHO district manual?",
+        opts: [
+          "Two-layer transverse closure: inner full thickness, outer serosa to serosa",
+          "One-layer longitudinal closure to save time",
+          "Right hemicolectomy for every typhoid hole",
+          "Send home on tablets"
+        ],
+        ok: 0,
+        why: "WHO Surgical Care at the District Hospital repairs a small-bowel perforation with a transverse two-layer invaginating closure (or a purse-string). A single layer, or a closure along the bowel, is not that method. Whether every single living-patient hole is a repair is still Awaiting Dr. Petit's sign-off."
+      },
+      {
+        q: "On the tray you fill the bowel, clamp it, and squeeze. Water leaks at one corner. What does this draft say?",
+        opts: [
+          "Ignore a small leak",
+          "Take the stitches out and redo, then water-test again",
+          "Pour iodine on it and close the abdomen",
+          "Always convert to a total colectomy"
+        ],
+        ok: 1,
+        why: "Draft wet-lab rule, Awaiting Dr. Petit's sign-off: if it leaks or narrows, take the stitches out and redo. A leak on the tray is practice for not leaving a leak in theatre."
+      },
+      {
+        q: "Peritonitis, night time, no anaesthetic provider and no safe theatre. The patient is an adult. What first?",
+        opts: [
+          "Start the laparotomy under local anaesthetic alone",
+          "Resuscitate, nil by mouth, nasogastric tube, STG antibiotics if you are holding him, and refer",
+          "Oral metronidazole only and review next week",
+          "Close the skin tightly and discharge"
+        ],
+        ok: 1,
+        why: "STG §7.11: intravenous fluids, nil by mouth, nasogastric tube, and refer if expertise is not available. Do not start an operation you cannot finish. Ask on the Southern Region surgical WhatsApp network. This app has no phone numbers."
+      },
+      {
+        q: "Adult with peritonitis from a bowel perforation, still in a hospital that can operate. Which antibiotic pair is the Malawi STG 2023 §7.11 regimen?",
+        opts: [
+          "IV ceftriaxone 2 g every 24 hours and IV metronidazole 500 mg every 8 hours, for 5–7 days",
+          "The same adult gram doses for a 12 kg child",
+          "Cotrimoxazole tablets only",
+          "No antibiotics if the skin will be closed"
+        ],
+        ok: 0,
+        why: "That pair is the adult peritonitis regimen in Malawi STG 2023 §7.11. WHO’s district manual uses a different example (ampicillin, gentamicin, and metronidazole). Which regimen Dr Petit wants drilled is Awaiting Dr. Petit's sign-off. Never give the adult gram doses to a child."
+      }
     ];
     let ci = 0, correct = 0, answered = 0;
     function drawCase() {
       const c = cases[ci];
-      document.getElementById("caseq").textContent = c.q;
+      document.getElementById("caseq").textContent = "Case " + (ci + 1) + " of " + cases.length + ". " + c.q;
       document.getElementById("casefb").textContent = "";
       const box = document.getElementById("caseopts");
-      box.innerHTML = "";
-      c.opts.forEach((o, i) => {
+      box.textContent = "";
+      c.opts.forEach((opt, i) => {
         const b = document.createElement("button");
+        b.type = "button";
         b.className = "choice";
-        b.textContent = o;
-        b.onclick = () => {
-          answered++;
-          if (i === c.ok) { correct++; document.getElementById("casefb").textContent = "Correct. " + c.why; }
-          else document.getElementById("casefb").textContent = "Not the Petit draft answer. " + c.why;
+        b.textContent = opt;
+        b.addEventListener("click", () => {
+          if (b.disabled) return;
+          box.querySelectorAll("button").forEach((x) => { x.disabled = true; });
+          answered += 1;
+          const fb = document.getElementById("casefb");
+          if (i === c.ok) {
+            correct += 1;
+            fb.textContent = "Matches this draft. " + c.why;
+          } else {
+            fb.textContent = "Not the line in this draft. " + c.why;
+          }
           document.getElementById("casescore").textContent = correct + " / " + answered;
-        };
+        });
         box.appendChild(b);
       });
     }
-    document.getElementById("nextcase").onclick = () => { ci = (ci + 1) % cases.length; drawCase(); };
+    document.getElementById("nextcase").addEventListener("click", () => {
+      ci = (ci + 1) % cases.length;
+      drawCase();
+    });
     drawCase();
 
-    const replies = [
-      { k: ["valve", "ileocaecal", "cecum"], t: "A hole next to the valve is a poor place for a tight local repair. Think resection or stoma, not a squeezed stitch on swollen bowel." },
-      { k: ["shock", "bp", "dying"], t: "Resuscitate first. Theatre is not a place to finish the dying. If you cannot get him stable, do the least operation that stops the leak, or do not start." },
-      { k: ["pig", "cow", "intestine", "goat"], t: "Rinse the bowel. Make a small antimesenteric hole. Close across the bowel, not along it. Fill with water. If it leaks or will not take a fingertip, take the stitches out and do it again." },
-      { k: ["suture", "vicryl", "silk", "nylon"], t: "Use what the hospital has that is absorbable and not huge. The pattern matters more than the brand: healthy bites, no lumen pinch, no leak." },
-      { k: ["how many", "multiple", "two holes"], t: "Two holes far apart can be two repairs if the bowel is good. Holes on a sick segment belong in one resection." },
-      { k: ["refer", "district", "help"], t: "Refer if you have no anaesthetic, no light, no suture, no blood, or a case beyond the operation you have practised. Pride kills more patients than a long ambulance ride." }
-    ];
-    function ask() {
-      const inp = document.getElementById("q");
-      const text = inp.value.trim();
-      if (!text) return;
-      const log = document.getElementById("chatlog");
-      log.innerHTML += '<div class="msg user">' + text + "</div>";
-      const low = text.toLowerCase();
-      let ans = "I do not have Dr Petit’s line for that yet. In the abdomen, if you are unsure, do the safer smaller thing or refer. Write the question down for him on this visit.";
-      for (const r of replies) if (r.k.some(k => low.includes(k))) { ans = r.t; break; }
-      log.innerHTML += '<div class="msg bot">' + ans + "</div>";
-      inp.value = "";
-      log.scrollTop = log.scrollHeight;
+    function draftAnswer(raw) {
+      const q = raw.toLowerCase();
+      const has = (...words) => words.some((w) => q.includes(w));
+      if (has("child", "paed", "pediatr", "infant", "baby", "neonat")) {
+        return { badge: false, text: "Do not use the adult doses for a child. Malawi STG 2023 §9.7 (typhoid in children): ciprofloxacin 10 mg/kg by mouth 12-hourly for 14 days, or ceftriaxone 50 mg/kg IV once daily if the child cannot take oral medicine, and surgical referral if bowel perforation or gut bleeding is suspected. This page is not a paediatric protocol. Log the case on the Trainer tab." };
+      }
+      if (has("ceftriax", "metronid", "antibiotic", "gentamicin", "ampicillin")) {
+        return { badge: true, text: "Adults — Malawi STG 2023 §7.11 Peritonitis: IV ceftriaxone 2 g every 24 hours for 5–7 days and IV metronidazole 500 mg every 8 hours for 5–7 days, with intravenous fluids, analgesia, nil by mouth, and a nasogastric tube. That section says those IV antibiotics are indicated for appendicitis, cholecystitis, and bowel obstruction with perforation. WHO Surgical Care at the District Hospital gives another example: ampicillin 2 g IV every 6 hours, gentamicin 5 mg/kg IV every 24 hours, and metronidazole 500 mg IV every 8 hours. Which regimen Dr Petit wants taught is awaiting his sign-off. Log the question. Do not use adult doses for a child." };
+      }
+      if (has("shock", "resusc", "drip", "ringer", "saline", "fluid")) {
+        return { badge: true, text: "Start intravenous fluid before the knife. STG §7.11 and §1.4, and the WHO manual, use 0.9% sodium chloride or Ringer’s lactate. The STG sepsis example is a 30 ml/kg bolus unless the patient is in heart failure. A single fluid recipe for every typhoid perforation in this workshop is awaiting Dr. Petit's sign-off. Nil by mouth and a nasogastric tube go with the drip." };
+      }
+      if (has("valve", "ileocaec", "ileocec", "5 cm", "5cm", "caecum", "cecum")) {
+        return { badge: true, text: "This draft treats a hole within about 5 cm of the ileocaecal valve as a poor place for a tight local repair. That distance is a draft threshold. It is not in the WHO manual and it is not a signed figure from Dr Petit. WHO repairs a perforation transversely in two layers, and resects when several wounds are close together or the gut is ischaemic. Log his rule on the Trainer tab." };
+      }
+      if (has("two hole", "multiple", "several", "how many", "second hole")) {
+        return { badge: true, text: "Draft threshold, awaiting Dr. Petit's sign-off: two separate holes on healthy bowel can be two repairs; holes on one thin or dead stretch belong in one resection. WHO says resect when several wounds are close together or the gut is ischaemic. Tray 1 still practises a two-layer transverse closure on two holes so the stitch is learned. Log the number he actually uses." };
+      }
+      if (has("stoma", "ileostomy", "colostomy", "spout")) {
+        return { badge: true, text: "The 2025 Malawi.kom report includes making a stoma on fresh cow intestine. The exact stoma, the spout, and how it is fixed on the tray are awaiting Dr. Petit's sign-off. The WHO manual describes loop, double-barrel, and end colostomy, and an end ileostomy, mainly for colon injury. That is background, not his signed typhoid recipe. If you cannot make a safe stoma, resuscitate and refer." };
+      }
+      if (has("suture", "vicryl", "silk", "nylon", "interrupted", "running", "lembert", "two-layer", "two layer", "one layer", "one-layer", "stitch")) {
+        return { badge: true, text: "WHO Surgical Care at the District Hospital closes a small-bowel perforation transversely in two layers: an inner invaginating layer through all layers of the wall, then an outer serosa-to-serosa layer. For an anastomosis the manual names continuous 2/0 absorbable on a half-circle atraumatic needle for the inner layer, and a second seromuscular layer that may be continuous or interrupted. Suture brand, size, and running versus interrupted for the perforation repair in a Malawi district theatre: Awaiting Dr. Petit's sign-off. Log the suture he names on the Trainer tab." };
+      }
+      if (has("water", "squeeze", "narrow", "thumb", "mucosa", "corner")) {
+        return { badge: true, text: "Wet-lab draft: fill with water, clamp, squeeze gently, and look at the corners and the line. WHO says the anastomosis should admit the tip of the thumb and finger. This draft also wants no mucosa showing and no mesenteric twist. If it leaks or narrows: take the stitches out and redo. That pass sentence is awaiting Dr. Petit's sign-off." };
+      }
+      if (has("day 3", "days 3", "day 4", "day 5", "post-op", "post op", "on the ward")) {
+        return { badge: true, text: "Watch the abdomen after a join. Anastomotic leak is one cause of peritonitis in the WHO manual. This draft says look on days 3–5 for new pain, fever, a silent tender abdomen, or dirty wound fluid. That day window is not printed in the STG or in that WHO chapter, so it is awaiting Dr. Petit's sign-off. Log his wording." };
+      }
+      if (has("whatsapp", "refer", "anaesth", "anesthes", "no theatre", "no blood", "expertise")) {
+        return { badge: true, text: "Resuscitate and refer if theatre, anaesthesia, blood, suture, or expertise is missing. STG §7.11 says refer if expertise is not available, and refer again if the patient needs intensive care or another operation. The Southern Region surgical WhatsApp consultation network is the draft way to ask a surgeon. This app stores no phone numbers. The group name and how to join are awaiting Dr. Petit's sign-off." };
+      }
+      if (has("cow", "pig", "goat", "abattoir", "butcher", "intestine", "flies")) {
+        return { badge: true, text: "Malawi.kom’s 2023, 2024, and 2025 reports describe the practical course on fresh cow intestine. Use cow first. Pig or goat only if cow intestine cannot be found that morning — that fallback is awaiting Dr. Petit's sign-off. Rinse it, cover it against flies, and treat it as meat waste afterwards. It is not sterile theatre." };
+      }
+      if (has("skin", "wound", "delayed", "fascia")) {
+        return { badge: true, text: "Close the fascia. Leave contaminated skin open. WHO: a potentially contaminated wound is packed open and closed as a delayed primary closure after about 2–5 days. Clean-contaminated wounds in that manual are closed after about 48 hours. The exact day Dr Petit wants after a dirty laparotomy is awaiting his sign-off." };
+      }
+      if (has("leak")) {
+        return { badge: true, text: "On the tray: if it leaks or narrows, take the stitches out and redo, then water-test again. On the ward: this draft watches days 3–5, and that window is awaiting Dr. Petit's sign-off. Log which setting you meant." };
+      }
+      return { badge: true, text: "This draft has no note for that yet. It is not Dr Petit speaking. If you are unsure in the abdomen, do the operation you have practised with a supervisor, or resuscitate and refer. Log this question on the Trainer tab so it can be answered with him." };
     }
-    document.getElementById("askbtn").onclick = ask;
-    document.getElementById("q").addEventListener("keydown", e => { if (e.key === "Enter") ask(); });
+    const chatlog = document.getElementById("chatlog");
+    function addMsg(cls, text, badge) {
+      const div = document.createElement("div");
+      div.className = "msg " + cls;
+      div.appendChild(document.createTextNode(text));
+      if (badge) {
+        div.appendChild(document.createElement("br"));
+        const s = document.createElement("span");
+        s.className = "await";
+        s.textContent = "Awaiting Dr. Petit's sign-off";
+        div.appendChild(s);
+      }
+      chatlog.appendChild(div);
+      const top = div.getBoundingClientRect().top - chatlog.getBoundingClientRect().top + chatlog.scrollTop;
+      chatlog.scrollTop = Math.max(0, top - 4);
+    }
+    addMsg("bot", "Draft protocol notes only. Ask in simple English. Cited lines come from the Malawi STG or the WHO district manual. Anything else is marked as waiting for Dr Petit, and should be logged on the Trainer tab.", false);
+    function ask() {
+      const input = document.getElementById("q");
+      const text = input.value.trim();
+      if (!text) return;
+      lastQuestion = text;
+      addMsg("user", text, false);
+      const ans = draftAnswer(text);
+      addMsg("bot", ans.text, ans.badge);
+      input.value = "";
+    }
+    document.getElementById("askbtn").addEventListener("click", ask);
+    document.getElementById("q").addEventListener("keydown", (e) => { if (e.key === "Enter") ask(); });
+    ["Adult peritonitis — which IV antibiotics?", "One hole near the valve — repair or resect?", "Running or interrupted, and which suture?", "The water test leaks. What now?", "No anaesthetic tonight. What now?", "How do we make the stoma on the tray?"].forEach((label) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "choice";
+      b.textContent = label;
+      b.addEventListener("click", () => {
+        document.getElementById("q").value = label;
+        ask();
+      });
+      document.getElementById("chips").appendChild(b);
+    });
+    document.getElementById("logQuestionBtn").addEventListener("click", () => {
+      openLog("Ask the Protocol");
+      if (lastQuestion) document.getElementById("logShown").value = lastQuestion;
+    });
+
+    const CADRES = ["Clinical Officer", "Nurse", "Medical Officer", "Other"];
+    const regForm = document.getElementById("regform");
+    const cadreSel = document.getElementById("regCadre");
+    const otherWrap = document.getElementById("otherWrap");
+    document.getElementById("regDate").value = new Date().toISOString().slice(0, 10);
+    cadreSel.addEventListener("change", () => {
+      otherWrap.classList.toggle("hidden", cadreSel.value !== "Other");
+    });
+    function renderRegister() {
+      const rows = load(KEY.reg, []);
+      const counts = { "Clinical Officer": 0, Nurse: 0, "Medical Officer": 0, Other: 0 };
+      rows.forEach((row) => { if (counts[row.cadre] != null) counts[row.cadre] += 1; else counts.Other += 1; });
+      const totals = document.getElementById("totals");
+      totals.textContent = "";
+      CADRES.forEach((name) => {
+        const d = document.createElement("div");
+        d.className = "total";
+        const b = document.createElement("b");
+        b.textContent = String(counts[name]);
+        d.appendChild(b);
+        d.appendChild(document.createTextNode(name));
+        totals.appendChild(d);
+      });
+      const all = document.createElement("div");
+      all.className = "total all";
+      const allB = document.createElement("b");
+      allB.textContent = String(rows.length);
+      all.appendChild(allB);
+      all.appendChild(document.createTextNode("Total participants"));
+      totals.appendChild(all);
+      const list = document.getElementById("reglist");
+      list.textContent = "";
+      if (!rows.length) {
+        const p = document.createElement("p");
+        p.className = "muted";
+        p.textContent = "No participants yet.";
+        list.appendChild(p);
+        return;
+      }
+      rows.forEach((row) => {
+        const item = document.createElement("div");
+        item.className = "person";
+        const text = document.createElement("div");
+        const strong = document.createElement("b");
+        strong.textContent = row.name;
+        text.appendChild(strong);
+        const meta = document.createElement("div");
+        meta.className = "muted";
+        meta.textContent = row.cadre + (row.other ? " (" + row.other + ")" : "") + (row.facility ? " · " + row.facility : "") + (row.date ? " · " + row.date : "");
+        text.appendChild(meta);
+        const del = document.createElement("button");
+        del.type = "button";
+        del.className = "ghost";
+        del.textContent = "Remove";
+        del.addEventListener("click", () => {
+          save(KEY.reg, load(KEY.reg, []).filter((r) => r.id !== row.id));
+          renderRegister();
+        });
+        item.appendChild(text);
+        item.appendChild(del);
+        list.appendChild(item);
+      });
+    }
+    regForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("regName").value.trim();
+      if (!name) return;
+      const cadre = cadreSel.value;
+      const rows = load(KEY.reg, []);
+      rows.push({
+        id: uid(),
+        name: name,
+        cadre: cadre,
+        other: cadre === "Other" ? document.getElementById("regOther").value.trim() : "",
+        facility: document.getElementById("regFacility").value.trim(),
+        date: document.getElementById("regDate").value,
+        at: new Date().toISOString()
+      });
+      save(KEY.reg, rows);
+      regForm.reset();
+      cadreSel.value = "Clinical Officer";
+      otherWrap.classList.add("hidden");
+      document.getElementById("regDate").value = new Date().toISOString().slice(0, 10);
+      renderRegister();
+    });
+    function registerText() {
+      const rows = load(KEY.reg, []);
+      const counts = { "Clinical Officer": 0, Nurse: 0, "Medical Officer": 0, Other: 0 };
+      rows.forEach((row) => { counts[row.cadre] = (counts[row.cadre] || 0) + 1; });
+      const lines = ["Petit Protocol — workshop register", "Training aid only. Not for patient care.", ""];
+      CADRES.forEach((name) => lines.push(name + ": " + (counts[name] || 0)));
+      lines.push("Total: " + rows.length, "");
+      rows.forEach((row, i) => {
+        lines.push((i + 1) + ". " + row.name + " — " + row.cadre + (row.other ? " (" + row.other + ")" : "") + (row.facility ? " — " + row.facility : "") + (row.date ? " — " + row.date : ""));
+      });
+      if (!rows.length) lines.push("No participants yet.");
+      return lines.join("\n");
+    }
+    function registerCsv() {
+      const rows = load(KEY.reg, []);
+      const head = ["added_at", "name", "cadre", "other_role", "facility", "workshop_date"];
+      const lines = [head.join(",")];
+      rows.forEach((row) => {
+        lines.push([row.at, row.name, row.cadre, row.other, row.facility, row.date].map(csvCell).join(","));
+      });
+      return lines.join("\n");
+    }
+    document.getElementById("regText").addEventListener("click", () => download("petit-register.txt", registerText(), "text/plain"));
+    document.getElementById("regCsv").addEventListener("click", () => download("petit-register.csv", registerCsv(), "text/csv"));
+    renderRegister();
+
+    const EVAL_QS = [
+      { id: "useful", before: "Do you expect this workshop to be useful in your work?", after: "Was this workshop useful in your work?" },
+      { id: "learned", before: "Do you expect to learn something new?", after: "Did you learn something new?" },
+      { id: "confident", before: "Do you feel confident to do this bowel work with a supervisor available?", after: "Do you feel confident to use this with a supervisor available?" },
+      { id: "plan", before: "Do you plan to use these skills?", after: "Do you plan to use these skills?" }
+    ];
+    function blankEval() {
+      const block = () => ({ yes: 0, partly: 0, no: 0 });
+      const side = () => ({ useful: block(), learned: block(), confident: block(), plan: block() });
+      return { before: side(), after: side(), later: { using: block() } };
+    }
+    function getEval() {
+      const data = Object.assign(blankEval(), load(KEY.eval, {}));
+      const fresh = blankEval();
+      ["before", "after"].forEach((when) => {
+        data[when] = Object.assign(fresh[when], data[when] || {});
+        EVAL_QS.forEach((q) => { data[when][q.id] = Object.assign({ yes: 0, partly: 0, no: 0 }, data[when][q.id] || {}); });
+      });
+      data.later = data.later || {};
+      data.later.using = Object.assign({ yes: 0, partly: 0, no: 0 }, (data.later && data.later.using) || {});
+      return data;
+    }
+    function renderEval() {
+      const data = getEval();
+      const box = document.getElementById("evalbox");
+      box.textContent = "";
+      function tally(when, id, label) {
+        const wrap = document.createElement("div");
+        wrap.style.margin = "12px 0";
+        const p = document.createElement("p");
+        p.textContent = label;
+        wrap.appendChild(p);
+        const counts = document.createElement("p");
+        counts.className = "muted";
+        const cell = when === "later" ? data.later.using : data[when][id];
+        function paint() {
+          counts.textContent = "Yes " + cell.yes + " · Partly " + cell.partly + " · No " + cell.no;
+        }
+        paint();
+        const buttons = document.createElement("div");
+        buttons.className = "rowbtns";
+        ["yes", "partly", "no"].forEach((key) => {
+          const add = document.createElement("button");
+          add.type = "button";
+          add.className = "ghost";
+          add.textContent = key[0].toUpperCase() + key.slice(1) + " +1";
+          add.addEventListener("click", () => {
+            const live = getEval();
+            const target = when === "later" ? live.later.using : live[when][id];
+            target[key] += 1;
+            save(KEY.eval, live);
+            cell[key] = target[key];
+            paint();
+          });
+          buttons.appendChild(add);
+        });
+        const minus = document.createElement("button");
+        minus.type = "button";
+        minus.className = "ghost";
+        minus.textContent = "Undo last yes";
+        minus.addEventListener("click", () => {
+          const live = getEval();
+          const target = when === "later" ? live.later.using : live[when][id];
+          if (target.yes > 0) target.yes -= 1;
+          save(KEY.eval, live);
+          cell.yes = target.yes;
+          paint();
+        });
+        buttons.appendChild(minus);
+        wrap.appendChild(counts);
+        wrap.appendChild(buttons);
+        return wrap;
+      }
+      const beforeH = document.createElement("h3");
+      beforeH.textContent = "Before";
+      box.appendChild(beforeH);
+      EVAL_QS.forEach((q) => box.appendChild(tally("before", q.id, q.before)));
+      const afterH = document.createElement("h3");
+      afterH.textContent = "After";
+      box.appendChild(afterH);
+      EVAL_QS.forEach((q) => box.appendChild(tally("after", q.id, q.after)));
+      const laterH = document.createElement("h3");
+      laterH.textContent = "12 months later";
+      box.appendChild(laterH);
+      box.appendChild(tally("later", "using", "Are you using these skills in your work?"));
+    }
+    function evalText() {
+      const data = getEval();
+      const lines = ["Petit Protocol — workshop evaluation (draft)", "Themes from the 2011 Simavi/CHAM evaluation. Wording awaiting Dr. Petit's sign-off.", ""];
+      ["before", "after"].forEach((when) => {
+        lines.push(when.toUpperCase());
+        EVAL_QS.forEach((q) => {
+          const c = data[when][q.id];
+          lines.push("- " + (when === "before" ? q.before : q.after) + "  Yes " + c.yes + ", Partly " + c.partly + ", No " + c.no);
+        });
+        lines.push("");
+      });
+      const u = data.later.using;
+      lines.push("12 MONTHS LATER");
+      lines.push("- Using these skills?  Yes " + u.yes + ", Partly " + u.partly + ", No " + u.no);
+      return lines.join("\n");
+    }
+    document.getElementById("evalText").addEventListener("click", () => download("petit-evaluation.txt", evalText(), "text/plain"));
+    renderEval();
+
+    const LOGISTICS = [
+      ["abattoir", "Fresh cow small intestine booked from the abattoir for the morning of the workshop"],
+      ["butcher", "Backup butcher named, if the abattoir cannot supply"],
+      ["fallback", "Pig or goat intestine only if cow intestine is unavailable"],
+      ["flies", "Shade, a covered bowl or cool box, and a plan for heat and flies"],
+      ["hands", "Soap, water, and gloves for every person at the table"],
+      ["suture", "Sutures the hospital actually has — write the name in the correction log"],
+      ["instruments", "Needle holder, forceps, scissors, and clamps"],
+      ["syringe", "Syringe or jug, and clean water, to fill the bowel"],
+      ["trays", "Three labelled trays: 1 perforations, 2 stoma, 3 resection and join"],
+      ["waste", "Board or tray surface, bowls, and a bucket for meat waste"],
+      ["cover", "Cover for the intestine between exercises"],
+      ["certificate", "Certificates and the take-home guide ready for the end of the day"],
+      ["dispose", "After the day: tissue as meat waste unless the hospital says otherwise, and instruments washed"]
+    ];
+    function renderLogistics() {
+      const state = load(KEY.logs, {});
+      const box = document.getElementById("logistics");
+      box.textContent = "";
+      LOGISTICS.forEach(([id, label]) => {
+        const lab = document.createElement("label");
+        lab.className = "check";
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.checked = !!state[id];
+        input.addEventListener("change", () => {
+          const live = load(KEY.logs, {});
+          live[id] = input.checked;
+          save(KEY.logs, live);
+        });
+        const span = document.createElement("span");
+        span.textContent = label;
+        lab.appendChild(input);
+        lab.appendChild(span);
+        box.appendChild(lab);
+      });
+    }
+    document.getElementById("logisticsText").addEventListener("click", () => {
+      const state = load(KEY.logs, {});
+      const lines = ["Petit Protocol — wet-lab logistics", ""];
+      LOGISTICS.forEach(([id, label]) => lines.push((state[id] ? "[x] " : "[ ] ") + label));
+      download("petit-logistics.txt", lines.join("\n"), "text/plain");
+    });
+    renderLogistics();
+
+    const SIGNOFF = [
+      ["suture", "Suture material, and running versus interrupted, for each layer"],
+      ["stoma", "Exact stoma technique and how it is fixed on the tray"],
+      ["threshold", "Single-versus-multiple holes, and the 5 cm ileocaecal threshold"],
+      ["water", "Water-test pass rule, in his words"],
+      ["leakdays", "Whether to teach a day-3-to-5 leak watch"],
+      ["wanda", "John Wanda’s title, Nguludi link, and agreement to be named"],
+      ["fallback", "Pig or goat intestine only when cow is unavailable"],
+      ["name", "Whether the app may keep the name Petit Protocol"]
+    ];
+    function renderSignoff() {
+      const state = load(KEY.sign, {});
+      const box = document.getElementById("signoff");
+      box.textContent = "";
+      SIGNOFF.forEach(([id, label]) => {
+        const lab = document.createElement("label");
+        lab.className = "check";
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.checked = !!state[id];
+        input.addEventListener("change", () => {
+          const live = load(KEY.sign, {});
+          live[id] = input.checked;
+          save(KEY.sign, live);
+        });
+        const span = document.createElement("span");
+        span.textContent = label;
+        lab.appendChild(input);
+        lab.appendChild(span);
+        box.appendChild(lab);
+      });
+    }
+    renderSignoff();
+
+    function getCorr() { return load(KEY.corr, []); }
+    function corrPlain() {
+      const rows = getCorr();
+      const lines = ["Petit Protocol — correction log", "Draft training aid. Not for patient care.", ""];
+      if (!rows.length) lines.push("No corrections logged yet.");
+      rows.forEach((row, i) => {
+        lines.push(
+          (i + 1) + ". " + stamp(row.at),
+          "Logger: " + row.logger,
+          "Screen: " + row.screen,
+          "Section: " + row.section,
+          "On screen: " + row.shown,
+          "Correction: " + row.correction,
+          "Note: " + (row.note || ""),
+          ""
+        );
+      });
+      return lines.join("\n");
+    }
+    function corrCsv() {
+      const rows = getCorr();
+      const head = ["time_blantyre", "time_iso", "logger", "screen", "section", "on_screen", "correction", "note"];
+      const lines = [head.join(",")];
+      rows.forEach((row) => {
+        lines.push([stamp(row.at), row.at, row.logger, row.screen, row.section, row.shown, row.correction, row.note].map(csvCell).join(","));
+      });
+      return lines.join("\n");
+    }
+    function corrWhatsApp() {
+      const rows = getCorr();
+      if (!rows.length) return "Petit Protocol corrections: none logged yet.";
+      const lines = ["Petit Protocol corrections (draft workshop, not for patient care)"];
+      rows.forEach((row, i) => {
+        lines.push((i + 1) + ") " + row.section + " / " + row.screen + " — " + row.correction + (row.note ? " (" + row.note + ")" : ""));
+      });
+      return lines.join("\n");
+    }
+    function showExport(text, copied) {
+      document.getElementById("corrPreview").textContent = text;
+      document.getElementById("drawerPreview").textContent = text;
+      document.getElementById("saveMsg").textContent = copied ? "Copied. You can also long-press the text below." : "Text is in the box below if copy is blocked.";
+    }
+    function renderCorr() {
+      const rows = getCorr();
+      const list = document.getElementById("corrList");
+      list.textContent = "";
+      const btn = document.getElementById("openLogBtn");
+      btn.textContent = rows.length ? "Log a correction (" + rows.length + ")" : "Log a correction";
+      if (!rows.length) {
+        const p = document.createElement("p");
+        p.className = "muted";
+        p.textContent = "No corrections yet.";
+        list.appendChild(p);
+        return;
+      }
+      rows.forEach((row) => {
+        const item = document.createElement("div");
+        item.className = "corr";
+        const text = document.createElement("div");
+        const b = document.createElement("b");
+        b.textContent = row.section + " · " + row.screen;
+        text.appendChild(b);
+        const p = document.createElement("div");
+        p.textContent = row.correction;
+        const m = document.createElement("div");
+        m.className = "muted";
+        m.textContent = stamp(row.at) + " · " + row.logger;
+        text.appendChild(p);
+        text.appendChild(m);
+        const del = document.createElement("button");
+        del.type = "button";
+        del.className = "ghost";
+        del.textContent = "Remove";
+        del.addEventListener("click", () => {
+          save(KEY.corr, getCorr().filter((r) => r.id !== row.id));
+          renderCorr();
+        });
+        item.appendChild(text);
+        item.appendChild(del);
+        list.appendChild(item);
+      });
+    }
+    function openLog(section) {
+      document.getElementById("logScreen").value = TAB_LABEL[currentTab] || currentTab;
+      document.getElementById("logSection").value = section || TAB_SECTION[currentTab] || "Other";
+      const remembered = load(KEY.logger, "Reza");
+      document.getElementById("logLogger").value = remembered || "Reza";
+      document.getElementById("saveMsg").textContent = "";
+      document.getElementById("drawer").hidden = false;
+      document.body.style.overflow = "hidden";
+      document.getElementById("logCorrection").focus();
+    }
+    function closeLog() {
+      document.getElementById("drawer").hidden = true;
+      document.body.style.overflow = "";
+    }
+    document.getElementById("openLogBtn").addEventListener("click", () => openLog());
+    document.getElementById("openLogBtn2").addEventListener("click", () => openLog());
+    document.getElementById("closeLog").addEventListener("click", closeLog);
+    document.getElementById("drawer").addEventListener("click", (e) => {
+      if (e.target.id === "drawer") closeLog();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !document.getElementById("drawer").hidden) closeLog();
+    });
+    document.getElementById("saveCorr").addEventListener("click", () => {
+      const correction = document.getElementById("logCorrection").value.trim();
+      const msg = document.getElementById("saveMsg");
+      if (!correction) {
+        msg.textContent = "Write what he corrected, then save.";
+        return;
+      }
+      const logger = document.getElementById("logLogger").value.trim() || "Reza";
+      save(KEY.logger, logger);
+      const rows = getCorr();
+      rows.unshift({
+        id: uid(),
+        at: new Date().toISOString(),
+        logger: logger,
+        screen: document.getElementById("logScreen").value.trim(),
+        section: document.getElementById("logSection").value,
+        shown: document.getElementById("logShown").value.trim(),
+        correction: correction,
+        note: document.getElementById("logNote").value.trim()
+      });
+      save(KEY.corr, rows);
+      document.getElementById("logShown").value = "";
+      document.getElementById("logCorrection").value = "";
+      document.getElementById("logNote").value = "";
+      msg.textContent = "Saved on this phone. " + rows.length + " correction" + (rows.length === 1 ? "" : "s") + " in the log.";
+      renderCorr();
+    });
+    async function exportCorr(kind) {
+      const text = kind === "csv" ? corrCsv() : kind === "wa" ? corrWhatsApp() : corrPlain();
+      if (kind === "csv") download("petit-corrections.csv", text, "text/csv");
+      if (kind === "text") download("petit-corrections.txt", text, "text/plain");
+      let copied = false;
+      if (kind === "wa" || kind === "text") copied = await copyText(text);
+      showExport(text, copied && kind !== "csv");
+    }
+    document.getElementById("corrText").addEventListener("click", () => exportCorr("text"));
+    document.getElementById("corrCsv").addEventListener("click", () => exportCorr("csv"));
+    document.getElementById("corrWa").addEventListener("click", () => exportCorr("wa"));
+    document.getElementById("drawerText").addEventListener("click", () => exportCorr("text"));
+    document.getElementById("drawerCsv").addEventListener("click", () => exportCorr("csv"));
+    document.getElementById("drawerWa").addEventListener("click", () => exportCorr("wa"));
+    renderCorr();
+
+    const swstatus = document.getElementById("swstatus");
+    if (!("serviceWorker" in navigator) || location.protocol === "file:") {
+      swstatus.textContent = "Opened without the install path. The pages still work on this device. Add the GitHub Pages copy to the home screen for the offline app.";
+    } else {
+      navigator.serviceWorker.register("./sw.js").then(() => {
+        swstatus.textContent = "Offline copy saved on this device. After this visit it can open with no signal.";
+      }).catch(() => {
+        swstatus.textContent = "Offline save did not start. The pages still work while this tab is open.";
+      });
+    }
   </script>
 </body>
 </html>
