@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Petit Protocol — Bowel Perforation Training</title>
+  <meta name="theme-color" content="#1b4332" />
+  <style>
+    :root {
+      --green: #1b4332;
+      --green-2: #2d6a4f;
+      --leaf: #40916c;
+      --sand: #f4efe6;
+      --card: #fffdf8;
+      --ink: #1a1a1a;
+      --muted: #5c5c5c;
+      --line: #e4dccf;
+      --warn: #9a3412;
+      --ok: #166534;
+      --accent: #b45309;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--sand); color: var(--ink); font-family: "Segoe UI", system-ui, sans-serif; }
+    body { min-height: 100dvh; }
+    header {
+      background: var(--green);
+      color: #fff;
+      padding: 14px 16px 12px;
+      position: sticky; top: 0; z-index: 20;
+    }
+    header h1 { font-size: 16px; margin: 0; letter-spacing: .02em; }
+    header p { margin: 2px 0 0; font-size: 12px; opacity: .85; }
+    nav {
+      display: flex; gap: 6px; overflow-x: auto; padding: 10px 12px;
+      background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 58px; z-index: 19;
+    }
+    nav button {
+      border: 1px solid var(--line); background: #fff; color: var(--green);
+      border-radius: 999px; padding: 7px 12px; font-size: 13px; white-space: nowrap; cursor: pointer;
+    }
+    nav button.active { background: var(--green); color: #fff; border-color: var(--green); }
+    main { max-width: 720px; margin: 0 auto; padding: 16px 14px 90px; }
+    .card {
+      background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+      padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 0 rgba(0,0,0,.03);
+    }
+    h2 { font-size: 20px; margin: 0 0 8px; }
+    h3 { font-size: 16px; margin: 16px 0 8px; color: var(--green); }
+    p, li { line-height: 1.45; font-size: 15px; }
+    .muted { color: var(--muted); font-size: 13px; }
+    .pill { display: inline-block; background: #e9f5ee; color: var(--green-2); border-radius: 999px; padding: 2px 8px; font-size: 11px; font-weight: 600; }
+    .warnbox { background: #fff7ed; border: 1px solid #fdba74; color: #7c2d12; border-radius: 12px; padding: 12px; font-size: 14px; }
+    .okbox { background: #ecfdf3; border: 1px solid #86efac; color: #14532d; border-radius: 12px; padding: 12px; font-size: 14px; }
+    button.primary, .choice {
+      width: 100%; text-align: left; padding: 12px 14px; margin: 6px 0;
+      border-radius: 12px; border: 1px solid var(--line); background: #fff; cursor: pointer; font-size: 15px;
+    }
+    button.primary { background: var(--green); color: #fff; border: 0; text-align: center; font-weight: 600; }
+    button.ghost { background: transparent; border: 1px solid var(--line); }
+    .step { display: flex; gap: 10px; margin: 10px 0; }
+    .num { flex: 0 0 28px; height: 28px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 700; }
+    .hidden { display: none; }
+    #chatlog { max-height: 320px; overflow-y: auto; }
+    .msg { margin: 8px 0; padding: 10px 12px; border-radius: 12px; font-size: 14px; }
+    .msg.bot { background: #eef6f1; }
+    .msg.user { background: #fff; border: 1px solid var(--line); }
+    input[type=text] { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--line); font-size: 15px; }
+    .score { font-size: 28px; font-weight: 700; color: var(--green); }
+    footer.note { font-size: 12px; color: var(--muted); margin-top: 8px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    @media (max-width: 520px) { .grid2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Petit Protocol</h1>
+    <p>Bowel perforation training for Malawian clinical officers · draft for Dr Jan Petit</p>
+  </header>
+  <nav>
+    <button class="active" data-tab="home">Home</button>
+    <button data-tab="decide">Decide</button>
+    <button data-tab="repair">Repair</button>
+    <button data-tab="wetlab">Wet lab</button>
+    <button data-tab="cases">Cases</button>
+    <button data-tab="ask">Ask Petit</button>
+    <button data-tab="trainer">Trainer</button>
+  </nav>
+  <main>
+    <section id="home" class="tab">
+      <div class="card">
+        <span class="pill">PROTOTYPE · NOT FOR PATIENT CARE</span>
+        <h2>Keep the teaching after the teacher flies home</h2>
+        <p>Dr Petit trains clinical officers to find and repair bowel perforations using pig or cow intestine. This app is meant to hold his method: when to operate, how to sew, how to practise, and when to stop and refer.</p>
+        <p class="muted">It does not replace his hands in theatre. It repeats his workshop between visits and after he retires.</p>
+      </div>
+      <div class="card">
+        <h3>What a clinical officer can do here</h3>
+        <ol>
+          <li>Walk a decision: repair, resect, stoma, or refer.</li>
+          <li>Rehearse the repair steps in order.</li>
+          <li>Set up a pig/cow intestine station the Petit way.</li>
+          <li>Sit a short case test before a supervised list.</li>
+          <li>Ask a question in simple English and get a conservative answer.</li>
+        </ol>
+      </div>
+      <div class="card warnbox">
+        Training aid only. Do not use this app to operate on a patient. Follow your hospital protocol and a supervising surgeon when one is available.
+      </div>
+    </section>
+
+    <section id="decide" class="tab hidden">
+      <div class="card">
+        <h2>Decision coach</h2>
+        <p class="muted">Draft logic for Dr Petit to rewrite. Start with the patient in front of you.</p>
+        <div id="qbox"></div>
+        <div id="result" class="hidden"></div>
+      </div>
+    </section>
+
+    <section id="repair" class="tab hidden">
+      <div class="card">
+        <h2>Primary repair of ileal perforation</h2>
+        <p class="muted">Standard LMIC teaching placeholder — replace with Dr Petit’s exact stitch and suture.</p>
+        <div class="step"><div class="num">1</div><div>Resuscitate first. IV fluids, antibiotics that cover gut flora, nasogastric tube, catheter. Do not rush a shocked patient into theatre.</div></div>
+        <div class="step"><div class="num">2</div><div>Midline laparotomy. Pack and suck. Look from duodenojejunal flexure to rectum. Count every hole. Look for paper-thin “pre-perforations”.</div></div>
+        <div class="step"><div class="num">3</div><div>If one small antimesenteric ileal hole, bowel otherwise healthy, patient stable: freshen edges only if dead. Close transversely so you do not narrow the lumen.</div></div>
+        <div class="step"><div class="num">4</div><div>Typical draft: interrupted seromuscular sutures (2-0 or 3-0 absorbable), one layer, bites in healthy bowel a few millimetres from the hole. Check lumen with a fingertip or a soft tube.</div></div>
+        <div class="step"><div class="num">5</div><div>Wash the whole abdomen with warm saline until the effluent is clear. Place a drain only if your local protocol says so. Close fascia securely.</div></div>
+        <div class="step"><div class="num">6</div><div>If many holes, dead bowel, hole next to the ileocaecal valve, or the patient is dying on the table: do not force a pretty anastomosis. Resect, or bring out a stoma, or pack and refer if you cannot finish safely.</div></div>
+        <div class="okbox">The skill to practise on intestine is the stitch that does not leak and does not strangle the lumen. That is what the wet lab is for.</div>
+      </div>
+    </section>
+
+    <section id="wetlab" class="tab hidden">
+      <div class="card">
+        <h2>Pig or cow intestine station</h2>
+        <p>This is the part Dr Petit already does in person. The app only standardises the station so a clinical officer can practise the week after he leaves.</p>
+        <h3>What you need</h3>
+        <ul>
+          <li>Fresh small bowel from an abattoir or butcher (pig or cow). Rinse well.</li>
+          <li>Board, gloves, basic set: needle holder, forceps, scissors, 2-0/3-0 suture.</li>
+          <li>Bowl of water or dilute iodine. Bucket for waste.</li>
+          <li>Phone to photograph the finished repair for the trainer.</li>
+        </ul>
+        <h3>Exercises (20–30 minutes each)</h3>
+        <ol>
+          <li><b>Single hole.</b> Cut a 5–8 mm hole on the antimesenteric border. Close transversely. Fill with water. Watch for leak.</li>
+          <li><b>Two holes close together.</b> Decide: two repairs or a short resection?</li>
+          <li><b>End-to-end join.</b> Cut the bowel. Join without twisting the mesentery. Test with water.</li>
+          <li><b>Narrowing check.</b> If you cannot pass a fingertip, you sewed it too tight. Redo.</li>
+        </ol>
+        <div class="warnbox">Animal tissue is not sterile theatre. Treat it as dirty skills practice. Wash hands. Dispose of tissue as meat waste, not in the clinical incinerator unless the hospital says so.</div>
+      </div>
+    </section>
+
+    <section id="cases" class="tab hidden">
+      <div class="card">
+        <h2>Case test</h2>
+        <p id="caseq"></p>
+        <div id="caseopts"></div>
+        <p id="casefb" class="muted"></p>
+        <p class="score" id="casescore"></p>
+        <button class="primary" id="nextcase">Next case</button>
+      </div>
+    </section>
+
+    <section id="ask" class="tab hidden">
+      <div class="card">
+        <h2>Ask Petit</h2>
+        <p class="muted">Rule-based coach for the demo. After the visit this becomes Dr Petit’s own answers, not a generic chatbot.</p>
+        <div id="chatlog"></div>
+        <input id="q" type="text" placeholder="e.g. one hole near the valve — repair or resect?" />
+        <button class="primary" id="askbtn" style="margin-top:8px">Ask</button>
+        <p class="footer note">If the answer is unsure, the app must say: refer or call a surgeon. Never guess in the abdomen.</p>
+      </div>
+    </section>
+
+    <section id="trainer" class="tab hidden">
+      <div class="card">
+        <h2>For Dr Petit on this visit</h2>
+        <p>Please mark what is wrong. We will change the app before anyone else sees it.</p>
+        <ul>
+          <li>Which stitch do you actually teach? One layer or two? Interrupted or running?</li>
+          <li>Which suture material do district hospitals really have?</li>
+          <li>When must a clinical officer stop and refer?</li>
+          <li>How do you set up the pig/cow table — photos we can lock in?</li>
+          <li>What mistakes do you correct every year?</li>
+          <li>May we use your name and “Petit Protocol”?</li>
+        </ul>
+        <h3>Proposed working arrangement</h3>
+        <p>You remain clinical author. Local partner builds, hosts, trains, and maintains. Malawi.kom / CHAM / COST can licence it. You can retire the flights; the method stays in the district hospital.</p>
+        <div class="okbox">Nothing goes live for patient-facing advice without your sign-off.</div>
+      </div>
+    </section>
+  </main>
+  <script>
+    const tabs = document.querySelectorAll("nav button");
+    tabs.forEach(btn => btn.onclick = () => {
+      tabs.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.querySelectorAll(".tab").forEach(t => t.classList.add("hidden"));
+      document.getElementById(btn.dataset.tab).classList.remove("hidden");
+    });
+
+    const tree = [
+      { id: 0, q: "Is the patient in shock or not responding to fluids?", a: [["Yes — still shocked", 1], ["No — reasonably stable", 2]] },
+      { id: 1, q: "Can you start surgery now with anaesthesia and blood available?", a: [["Yes", 3], ["No — no theatre / no anaesthetic / no blood", "REF"]] },
+      { id: 2, q: "How many perforations do you find, and is the bowel around them healthy?", a: [["One small hole, healthy bowel", "REPAIR"], ["Several holes or a stretch of dead/thin bowel", 4], ["Hole within ~5 cm of the ileocaecal valve", 4]] },
+      { id: 3, q: "At operation, is the bowel usable for a safe join?", a: [["Yes, limited disease", 2], ["No — dirty, dead, or patient crashing", "STOMA"]] },
+      { id: 4, q: "Are you trained and equipped to resect and join, or to make a stoma?", a: [["Yes — I can resect or make a stoma", "RESECT"], ["No — I should not invent a new operation tonight", "REF"]] }
+    ];
+    const labels = {
+      REPAIR: ["Primary repair", " freshen only dead edge, close transversely, test the lumen, wash the abdomen. Practise this on intestine until the water test is dry."],
+      RESECT: ["Resect or stoma", "Take the bad segment. Join only if the patient is stable and the ends look alive. If not, stoma. Do not leave dying bowel."],
+      STOMA: ["Damage control / stoma", "Stop the leak, wash, stoma or pack. Get the patient off the table alive. Refer early."],
+      REF: ["Do not start — resuscitate and refer", "A late, shocked perforation in a hospital with no anaesthetic is not a workshop case. Stabilise and move."]
+    };
+    let node = 0;
+    const qbox = document.getElementById("qbox");
+    const result = document.getElementById("result");
+    function renderQ() {
+      const n = tree.find(t => t.id === node);
+      qbox.innerHTML = "<h3>" + n.q + "</h3>";
+      n.a.forEach(([text, next]) => {
+        const b = document.createElement("button");
+        b.className = "choice";
+        b.textContent = text;
+        b.onclick = () => {
+          if (typeof next === "string") showRes(next);
+          else { node = next; renderQ(); }
+        };
+        qbox.appendChild(b);
+      });
+    }
+    function showRes(code) {
+      qbox.innerHTML = "";
+      result.classList.remove("hidden");
+      result.innerHTML = "<div class='okbox'><b>" + labels[code][0] + "</b><p>" + labels[code][1] + "</p></div><button class='primary' id='resetd'>Start again</button>";
+      document.getElementById("resetd").onclick = () => { node = 0; result.classList.add("hidden"); renderQ(); };
+    }
+    renderQ();
+
+    const cases = [
+      { q: "Stable young man. One 6 mm hole on the antimesenteric ileum, 40 cm from the valve. Rest of bowel looks well. What first?",
+        opts: ["Primary transverse repair", "Right hemicolectomy for every typhoid hole", "Close longitudinally to save time", "Send home on tablets"],
+        ok: 0, why: "Single healthy-edge ileal hole in a stable patient is the classic primary-repair case." },
+      { q: "You sew a repair. Water leaks at one corner. What now?",
+        opts: ["Ignore it if the leak is small", "Add a careful extra stitch and test again", "Pour iodine on it and close the abdomen", "Always convert to a total colectomy"],
+        ok: 1, why: "A leak on the table will leak in the ward. Fix it or change plan." },
+      { q: "Four holes over 20 cm of thin ileum, patient on a drip but tiring. You have never done an anastomosis unsupervised.",
+        opts: ["Repair all four quickly", "Resect if you are competent, otherwise stoma or call for help", "Only wash and hope", "Use silk through-and-through including mucosa in one bite everywhere"],
+        ok: 1, why: "Multiple diseased segments need resection or a stoma — not four hopeful stitches." }
+    ];
+    let ci = 0, correct = 0, answered = 0;
+    function drawCase() {
+      const c = cases[ci];
+      document.getElementById("caseq").textContent = c.q;
+      document.getElementById("casefb").textContent = "";
+      const box = document.getElementById("caseopts");
+      box.innerHTML = "";
+      c.opts.forEach((o, i) => {
+        const b = document.createElement("button");
+        b.className = "choice";
+        b.textContent = o;
+        b.onclick = () => {
+          answered++;
+          if (i === c.ok) { correct++; document.getElementById("casefb").textContent = "Correct. " + c.why; }
+          else document.getElementById("casefb").textContent = "Not the Petit draft answer. " + c.why;
+          document.getElementById("casescore").textContent = correct + " / " + answered;
+        };
+        box.appendChild(b);
+      });
+    }
+    document.getElementById("nextcase").onclick = () => { ci = (ci + 1) % cases.length; drawCase(); };
+    drawCase();
+
+    const replies = [
+      { k: ["valve", "ileocaecal", "cecum"], t: "A hole next to the valve is a poor place for a tight local repair. Think resection or stoma, not a squeezed stitch on swollen bowel." },
+      { k: ["shock", "bp", "dying"], t: "Resuscitate first. Theatre is not a place to finish the dying. If you cannot get him stable, do the least operation that stops the leak, or do not start." },
+      { k: ["pig", "cow", "intestine", "goat"], t: "Rinse the bowel. Make a small antimesenteric hole. Close across the bowel, not along it. Fill with water. If it leaks or will not take a fingertip, take the stitches out and do it again." },
+      { k: ["suture", "vicryl", "silk", "nylon"], t: "Use what the hospital has that is absorbable and not huge. The pattern matters more than the brand: healthy bites, no lumen pinch, no leak." },
+      { k: ["how many", "multiple", "two holes"], t: "Two holes far apart can be two repairs if the bowel is good. Holes on a sick segment belong in one resection." },
+      { k: ["refer", "district", "help"], t: "Refer if you have no anaesthetic, no light, no suture, no blood, or a case beyond the operation you have practised. Pride kills more patients than a long ambulance ride." }
+    ];
+    function ask() {
+      const inp = document.getElementById("q");
+      const text = inp.value.trim();
+      if (!text) return;
+      const log = document.getElementById("chatlog");
+      log.innerHTML += '<div class="msg user">' + text + "</div>";
+      const low = text.toLowerCase();
+      let ans = "I do not have Dr Petit’s line for that yet. In the abdomen, if you are unsure, do the safer smaller thing or refer. Write the question down for him on this visit.";
+      for (const r of replies) if (r.k.some(k => low.includes(k))) { ans = r.t; break; }
+      log.innerHTML += '<div class="msg bot">' + ans + "</div>";
+      inp.value = "";
+      log.scrollTop = log.scrollHeight;
+    }
+    document.getElementById("askbtn").onclick = ask;
+    document.getElementById("q").addEventListener("keydown", e => { if (e.key === "Enter") ask(); });
+  </script>
+</body>
+</html>
