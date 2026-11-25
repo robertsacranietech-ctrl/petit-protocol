@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Petit Protocol">
+  <rect width="512" height="512" rx="112" fill="#1b4332"/>
+  <rect x="78" y="176" width="356" height="160" rx="80" fill="none" stroke="#f4efe6" stroke-width="34"/>
+  <path d="M132 256h248" stroke="#d8f3dc" stroke-width="8" stroke-linecap="round"/>
+  <path d="M176 214v84M220 214v84M264 214v84M308 214v84M352 214v84" stroke="#f4efe6" stroke-width="16" stroke-linecap="round"/>
+</svg>
